@@ -24,7 +24,6 @@ Client -> Removed Infinite Stamina, Daytime feature code. Removed Menu options f
 - Commented out old byte patch silent aim to keep because it's fucking cool. Most unique solution to silent aim I've ever seen externally but ultimately quite easy to detect.
 - Removed menu options for web radar because I don't even have the code to work it.
 - Removed all unused menu options
-- 
 
 ###### Big changes to Byte Patch code
 I removed everything that does byte patching from the menu except weapon malfunctions and silent aim. Both have the code still but no way to enable it without un-commenting stuff or re-adding it to menu.
@@ -47,7 +46,7 @@ I removed everything that does byte patching from the menu except weapon malfunc
 
 #### 3/30/2025
 Made a notepad++ plugin to convert dump.txt into sdk.cs readable format.
-//link here
+https://github.com/Lilith2/EFT-Exporter
 
 #### 4/1/2025
 ###### Client Changes
