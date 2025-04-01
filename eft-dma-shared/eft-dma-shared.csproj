@@ -43,6 +43,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="DarkModeForms.imerzan" Version="1.0.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0" />
 	  <PackageReference Include="Microsoft.Bcl.Cryptography" Version="9.0.0" />
 	  <PackageReference Include="SkiaSharp.Views.WindowsForms" Version="2.88.9" />
@@ -50,6 +51,7 @@
 	  <PackageReference Include="Reloaded.Assembler" Version="1.0.16" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
 	  <PackageReference Include="Svg.Skia" Version="2.0.0.4" />
+	  <PackageReference Include="System.Net.Http.Json" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>
