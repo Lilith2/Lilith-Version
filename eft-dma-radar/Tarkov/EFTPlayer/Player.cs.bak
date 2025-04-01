@@ -170,11 +170,6 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
         public string TwitchChannelURL { get; protected set; }
 
         /// <summary>
-        /// Player Value
-        /// </summary>
-        public string Value { get; protected set; }
-
-        /// <summary>
         /// Player's Rotation in Local Game World.
         /// </summary>
         public Vector2 Rotation { get; private set; }
@@ -254,9 +249,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
         /// Player name.
         /// </summary>
         public virtual string Name { get; set; }
-        public PlayerProfile Profile { get; private set; }    
-        public float KD => Profile.Overall_KD ?? 0f;
-        public int TotalHoursPlayed => Profile.Hours ?? 0;
+
         /// <summary>
         /// Account UUID for Human Controlled Players.
         /// </summary>
@@ -1410,6 +1403,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
                             (MainForm.Config.QuestHelper.Enabled && (Gear?.HasQuestItems ?? false))
                         ))
                         lines[0] = $"!!{lines[0]}"; // Notify important loot
+
                     DrawPlayerHeight(canvas, point, localPlayer.Position.Y, Position.Y);
                     DrawPlayerText(canvas, point, lines);
                 }
@@ -1471,6 +1465,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
                 start.Y + MathF.Sin(radians) * aimlineLength);
         }
 
+
         private int GetMapLayer(float height)
         {
             var mapLayers = LoneMapManager.Map?.Config.MapLayers;
@@ -1493,47 +1488,20 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
         }
 
         /// <summary>
-        /// Rounds a number to the nearest multiple of 3, ensuring values between -2 and 2 inclusive return 0.
-        /// </summary>
-        private int RoundToMultipleOfThree(float number)
-        {
-            // If the absolute value is less than or equal to 2, return 0
-            if (Math.Abs(number) <= 2)
-                return 0;
-
-            // For positive numbers
-            if (number > 0)
-            {
-                int remainder = (int)number % 3;
-                return remainder == 0 ? (int)number : (int)number + (3 - remainder);
-            }
-            // For negative numbers
-            else
-            {
-                int remainder = (int)Math.Abs(number) % 3;
-                if (remainder == 0)
-                    return (int)number;
-                else
-                    return (int)number - (3 - remainder);
-            }
-        }
-
-        /// <summary>
         /// Draws one or more arrows to represent how many floors height-wise are between a player.
         /// Uses the defined MapLayers in Maps/*.json to determine the *floor* (layer)
         /// </summary>
         private void DrawPlayerHeight(SKCanvas canvas, SKPoint point, float localPlayerHeight, float playerHeight)
         {
-            // Calculate the raw height difference
-            var rawHeightDiff = playerHeight - localPlayerHeight;
+            var localPlayerLayer = GetMapLayer(localPlayerHeight);
+            var playerLayer = GetMapLayer(playerHeight);
 
-            // Round to the nearest multiple of 3 (always rounding up for positive values, down for negative)
-            int heightDiff = RoundToMultipleOfThree(rawHeightDiff);
+            var numArrows = Math.Abs(playerLayer - localPlayerLayer);
 
-            if (heightDiff == 0)
+            if (numArrows == 0)
                 return;
 
-            var up = heightDiff > 0;
+            var up = playerLayer - localPlayerLayer > 0;
 
             int arrowX = -20;
             int arrowY = -3;
@@ -1544,10 +1512,8 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
 
             point.Offset(arrowX * MainForm.UIScale, arrowY * MainForm.UIScale);
 
-            for (int i = 0; i < Math.Abs(heightDiff); i++)
+            for (int i = 0; i < numArrows; i++)
             {
-                if (i > 5)
-                    break;
                 using var path = up ? point.GetUpArrow(arrowSize) : point.GetDownArrow(arrowSize);
 
                 canvas.DrawPath(path, SKPaints.ShapeOutline);
@@ -1555,6 +1521,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
                 point.Offset(0, arrowYOffset * MainForm.UIScale);
             }
         }
+
 
         /// <summary>
         /// Draws Player Text on this location.
@@ -1639,7 +1606,6 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
                 if (loot is not null)
                 {
                     var playerValue = TarkovMarketItem.FormatPrice(gear?.Value ?? -1);
-                    Value = playerValue;
                     lines.Add($"Value: {playerValue}");
                     var iterations = 0;
                     foreach (var item in loot)

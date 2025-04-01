@@ -48,7 +48,7 @@ namespace arena_dma_radar.Arena.Features.MemoryWrites
                             materialID = Memory.ReadValue<MonoBehaviour>(opticMonoBehaviour).InstanceID;
                             break;
                         case ChamsManager.ChamsMode.Visible:
-                            if (ChamsManager.Materials!.TryGetValue((ChamsManager.ChamsMode.Visible, "AI"), out var visible) &&
+                            if (ChamsManager.Materials!.TryGetValue(ChamsManager.ChamsMode.Visible, out var visible) &&
                                 visible.InstanceID < 0)
                             {
                                 materialID = visible.InstanceID;
@@ -58,9 +58,8 @@ namespace arena_dma_radar.Arena.Features.MemoryWrites
                                 return;
                             }
                             break;
-                        
                         case ChamsManager.ChamsMode.VisCheckGlow:
-                            if (ChamsManager.Materials!.TryGetValue((ChamsManager.ChamsMode.VisCheckGlow, "AI"), out var vischeck) &&
+                            if (ChamsManager.Materials!.TryGetValue(ChamsManager.ChamsMode.VisCheckGlow, out var vischeck) &&
                                 vischeck.InstanceID < 0)
                             {
                                 materialID = vischeck.InstanceID;

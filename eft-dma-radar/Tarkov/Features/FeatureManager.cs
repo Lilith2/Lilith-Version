@@ -46,12 +46,6 @@ namespace eft_dma_radar.Tarkov.Features
                             {
                                 NativeHook.Initialize();
                             }
-                            if (NativeHook.Initialized && 
-                                Chams.Config.Mode is not ChamsManager.ChamsMode.Basic && 
-                                ChamsManager.Materials.Count == 0)
-                            {
-                                ChamsManager.Initialize();
-                            }
                             if (MemWrites.Config.AntiPage && NativeHook.Initialized && !AntiPage.Initialized)
                             {
                                 AntiPage.Initialize();

@@ -293,13 +293,6 @@ namespace eft_dma_radar.UI.ESP
                         else
                             label += " (Lean)";
                     }
-                    if (MemWriteFeature<LootThroughWalls>.Instance.Enabled && LootThroughWalls.ZoomEngaged)
-                    {
-                        if (label is null)
-                            label = "LTW";
-                        else
-                            label += " (LTW)";
-                    }
                     else if (MemWriteFeature<MoveSpeed>.Instance.Enabled)
                     {
                         if (label is null)

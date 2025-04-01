@@ -36,6 +36,7 @@ using eft_dma_shared.Common.Maps;
 using eft_dma_radar.Tarkov.Features;
 using eft_dma_radar.Tarkov.Features.MemoryWrites.Patches;
 using eft_dma_shared.Common.Misc.Data;
+using eft_dma_shared.Common.UI;
 
 [assembly: AssemblyTitle(Program.Name)]
 [assembly: AssemblyProduct(Program.Name)]
@@ -123,12 +124,18 @@ namespace eft_dma_radar
         private static void ConfigureProgram()
         {
             ApplicationConfiguration.Initialize();
-            EftDataManager.ModuleInitAsync().GetAwaiter().GetResult();
+            using var loading = LoadingForm.Create();
+            loading.UpdateStatus("Loading Tarkov.Dev Data...", 15);
+            EftDataManager.ModuleInitAsync(loading).GetAwaiter().GetResult();
+            loading.UpdateStatus("Loading Map Assets...", 35);
             LoneMapManager.ModuleInit();
+            loading.UpdateStatus("Starting DMA Connection...", 50);
             MemoryInterface.ModuleInit();
+            loading.UpdateStatus("Loading Remaining Modules...", 75);
             FeatureManager.ModuleInit();
             ResourceJanitor.ModuleInit(new Action(CleanupWindowResources));
             RuntimeHelpers.RunClassConstructor(typeof(MemPatchFeature<FixWildSpawnType>).TypeHandle);
+            loading.UpdateStatus("Loading Completed!", 100);
         }
 
         private static void CleanupWindowResources()

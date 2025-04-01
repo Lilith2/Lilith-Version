@@ -244,12 +244,9 @@ namespace eft_dma_radar.Tarkov.API
         public sealed class ProfileData
         {
 
-            [JsonPropertyName("aid")]
-            public int AccountID { get; set; }
-            
             [JsonPropertyName("info")]
             public ProfileInfo Info { get; set; }
-            
+
             [JsonPropertyName("pmcStats")]
             public StatsContainer PmcStats { get; set; }
 
@@ -258,19 +255,13 @@ namespace eft_dma_radar.Tarkov.API
         {
             [JsonPropertyName("nickname")]
             public string Nickname { get; set; }
-            
-            [JsonPropertyName("side")]
-            public string Side { get; set; }
-            
+
             [JsonPropertyName("experience")]
             public int Experience { get; set; }
-            
+
             [JsonPropertyName("memberCategory")]
             public int MemberCategory { get; set; }
-            
-            [JsonPropertyName("prestigeLevel")]
-            public int Prestige { get; set; }
-            
+
             [JsonPropertyName("registrationDate")]
             public int RegistrationDate { get; set; }
         }

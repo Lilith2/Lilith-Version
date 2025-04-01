@@ -683,16 +683,6 @@ namespace eft_dma_radar.UI.Misc
         public bool AntiPage { get; set; } = false;
 
         /// <summary>
-        /// Hides Raid Code from the game.
-        /// </summary>
-        [JsonPropertyName("hideRaidCode")]
-        public bool HideRaidCode { get; set; } = false;
-        /// <summary>
-        /// Enables Streamer Mode.
-        /// </summary>
-        [JsonPropertyName("streamerMode")]
-        public bool StreamerMode { get; set; } = false;
-        /// <summary>
         /// Enable No Recoil Feature on Startup.
         /// </summary>
         [JsonPropertyName("enableNoRecoil")]
@@ -963,16 +953,12 @@ namespace eft_dma_radar.UI.Misc
         {
             if (!Is100Percent)
                 ResetDefaults();
-
-            // Generate a number between 0 and 99 for direct percentage comparison
-            int roll = Random.Shared.Next(100);
-
-            // Use cumulative thresholds for comparison
-            if (roll < HeadPercent)
+            int roll = _rng.Next(0, 100) + 1;
+            if (roll <= HeadPercent)
                 return Bones.HumanHead;
-            else if (roll < HeadPercent + TorsoPercent)
+            else if (roll <= HeadPercent + TorsoPercent)
                 return Random.Shared.GetItems(Skeleton.AllTorsoBones.Span, 1)[0];
-            else if (roll < HeadPercent + TorsoPercent + ArmsPercent)
+            else if (roll <= HeadPercent + TorsoPercent + ArmsPercent)
                 return Random.Shared.GetItems(Skeleton.AllArmsBones.Span, 1)[0];
             else // Legs
                 return Random.Shared.GetItems(Skeleton.AllLegsBones.Span, 1)[0];
