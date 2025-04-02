@@ -52,3 +52,6 @@ https://github.com/Lilith2/EFT-Exporter
 ###### Client Changes
 - added all new market data code from Dreadful's fork manually into this version. Seems to work. It also added a loading bar to startup.
 
+#### 4/2/2025
+new branch removing large swathes of shit
+https://github.com/Lilith2/Lilith-Version/tree/SLIM-Lilith
