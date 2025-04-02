@@ -1,6 +1,5 @@
 ﻿using eft_dma_shared.Common.DMA;
 using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
 using eft_dma_shared.Common.Unity.LowLevel.Hooks;
 using System.Diagnostics;
 using static eft_dma_shared.Common.Unity.MonoLib;
@@ -71,18 +70,18 @@ namespace eft_dma_shared.Common.Features
                 if (sigIndex != -1)
                 {
                     Memory.WriteBufferEnsure(pFuncBase + (uint)sigIndex, Patch.AsSpan());
-                    LoneLogging.WriteLine($"MemPatch {GetType()} Applied!");
+                    $"MemPatch {GetType()} Applied!".printf();
                     return IsApplied = true;
                 }
                 else if (method.FindSignatureOffset(Patch) != -1)
                 {
-                    LoneLogging.WriteLine($"MemPatch {GetType()} Already Set!");
+                    $"MemPatch {GetType()} Already Set!".printf();
                     return IsApplied = true;
                 }
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR Applying Patch {GetType()}: {ex}");
+                $"ERROR Applying Patch {GetType()}: {ex}".printf();
             }
             return false;
         }
@@ -96,7 +95,7 @@ namespace eft_dma_shared.Common.Features
             ulong methodAddr = NativeMethods.CompileMethod(Memory.GetCodeCave());
             if (methodAddr == 0x0)
             {
-                LoneLogging.WriteLine($"Failed to find method {methodName} in {className}");
+                $"Failed to find method {methodName} in {className}".printf();
                 return;
             }
             ulong mClass1;
@@ -107,7 +106,7 @@ namespace eft_dma_shared.Common.Features
             if (sigIndex != -1)
             {
                 Memory.WriteBufferEnsure(methodAddr + (uint)sigIndex + (uint)offset, patch.AsSpan());
-                LoneLogging.WriteLine($"Patched {className}.{methodName}!");
+                $"Patched {className}.{methodName}!".printf();
             }
             if (compileClass)
             {
@@ -158,7 +157,7 @@ namespace eft_dma_shared.Common.Features
                 try
                 {
                     Memory.WriteBufferEnsure<byte>(methodAddr, sigInfo.Patch);
-                    LoneLogging.WriteLine(FormatEx($"Successfully patched {GetName(className, methodName)}!"));
+                    FormatEx($"Successfully patched {GetName(className, methodName)}!").printf();
                 }
                 catch
                 {
@@ -201,13 +200,13 @@ namespace eft_dma_shared.Common.Features
                     throw new Exception(FormatEx($"Unable to find patch signature for {GetName(className, methodName)}!"));
                 else
                 {
-                    LoneLogging.WriteLine(FormatEx($"{GetName(className, methodName)} has already been patched!"));
+                    FormatEx($"{GetName(className, methodName)} has already been patched!").printf();
                     return;
                 }
             }
             else if (sig1AsPatch)
             {
-                LoneLogging.WriteLine(FormatEx($"{GetName(className, methodName)} has already been patched!"));
+                FormatEx($"{GetName(className, methodName)} has already been patched!").printf();
                 return;
             }
 
@@ -217,7 +216,7 @@ namespace eft_dma_shared.Common.Features
             try
             {
                 Memory.WriteBufferEnsure<byte>(finalAddr, usedPatch);
-                LoneLogging.WriteLine(FormatEx($"Successfully patched {GetName(className, methodName)}!"));
+                FormatEx($"Successfully patched {GetName(className, methodName)}!").printf();
             }
             catch
             {

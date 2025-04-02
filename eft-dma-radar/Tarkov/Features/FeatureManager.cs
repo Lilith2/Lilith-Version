@@ -4,9 +4,10 @@ using eft_dma_radar.UI.Misc;
 using eft_dma_shared.Common.DMA;
 using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_shared.Common.Features;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity.LowLevel;
 using eft_dma_shared.Common.Unity.LowLevel.Hooks;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov.Features
 {
@@ -33,7 +34,7 @@ namespace eft_dma_radar.Tarkov.Features
 
         private static void Worker()
         {
-            LoneLogging.WriteLine("Features Thread Starting...");
+            "Features Thread Starting...".printf();
             while (true)
             {
                 try
@@ -45,10 +46,6 @@ namespace eft_dma_radar.Tarkov.Features
                             if (MemWrites.Config.AdvancedMemWrites && !NativeHook.Initialized)
                             {
                                 NativeHook.Initialize();
-                            }
-                            if (MemWrites.Config.AntiPage && NativeHook.Initialized && !AntiPage.Initialized)
-                            {
-                                AntiPage.Initialize();
                             }
                             var memWrites = IFeature.AllFeatures
                                 .OfType<IMemWriteFeature>()
@@ -74,7 +71,7 @@ namespace eft_dma_radar.Tarkov.Features
                 }
                 catch (Exception ex)
                 {
-                    LoneLogging.WriteLine($"[Features Thread] CRITICAL ERROR: {ex}");
+                    $"[Features Thread] CRITICAL ERROR: {ex}".printf();
                 }
                 finally
                 {
@@ -105,7 +102,7 @@ namespace eft_dma_radar.Tarkov.Features
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"MemWrites [FAIL] {ex}");
+                $"MemWrites [FAIL] {ex}".printf();
             }
         }
 
@@ -124,7 +121,7 @@ namespace eft_dma_radar.Tarkov.Features
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"MemPatches [FAIL] {ex}");
+                $"MemPatches [FAIL] {ex}".printf();
             }
         }
 

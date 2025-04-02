@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System;
 
 namespace eft_dma_shared.Common.Misc
 {
@@ -12,6 +13,46 @@ namespace eft_dma_shared.Common.Misc
     /// </summary>
     public static class Extensions
     {
+        #region Console Output Extensions
+
+        /// <summary>
+        /// Prints a message to the console with a newline (like printf in C)
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void printf(this string format, params object[] args)
+        {
+            Console.WriteLine(format, args);
+        }
+
+        /// <summary>
+        /// Prints a message to the console without a newline (like printf in C)
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void printf_no_newline(this string format, params object[] args)
+        {
+            Console.Write(format, args);
+        }
+
+        /// <summary>
+        /// Prints a message to the console with a newline (like puts in C)
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void puts(this string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        /// <summary>
+        /// Prints a message to the console without a newline (like putchar in C)
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void putchar(this char c)
+        {
+            Console.Write(c);
+        }
+
+        #endregion
+
         #region Generic Extensions
 
         /// <summary>

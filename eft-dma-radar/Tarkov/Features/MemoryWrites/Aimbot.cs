@@ -11,7 +11,7 @@ using eft_dma_shared.Common.Players;
 using eft_dma_shared.Common.Ballistics;
 using eft_dma_shared.Common.Unity;
 using eft_dma_shared.Common.Unity.Collections;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Misc.Pools;
 using static eft_dma_shared.Common.Unity.UnityTransform;
 
@@ -73,7 +73,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
         /// </summary>
         private void AimbotWorker()
         {
-            LoneLogging.WriteLine("Aimbot thread starting...");
+            "Aimbot thread starting...".printf();
             while (true)
             {
                 try
@@ -89,7 +89,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                 }
                 catch (Exception ex)
                 {
-                    LoneLogging.WriteLine($"CRITICAL ERROR on Aimbot Thread: {ex}"); // Log CRITICAL error
+                    $"CRITICAL ERROR on Aimbot Thread: {ex}".printf(); // Log CRITICAL error
                 }
                 finally
                 {
@@ -117,7 +117,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                     /// If it has changed we should re-init the Aimbot Cache
                     if (Cache != handsController) // Reset Aimbot Cache -> First Cycle
                     {
-                        LoneLogging.WriteLine("[Aimbot] Reset!");
+                        "[Aimbot] Reset!".printf();
                         Cache?.ResetLock();
                         Cache = new AimbotCache(handsController);
                         /// First run checks
@@ -127,7 +127,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                             currentAccuracy > 0f && currentAccuracy < 1f)
                         {
                             Memory.WriteValue(game, handsController + Offsets.FirearmController.TotalCenterOfImpact, targetAccuracy);
-                            LoneLogging.WriteLine($"[Aimbot] Set Weapon Accuracy {currentAccuracy} -> {targetAccuracy}");
+                            $"[Aimbot] Set Weapon Accuracy {currentAccuracy} -> {targetAccuracy}".printf();
                         }
                     }
 
@@ -186,7 +186,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"Aimbot [FAIL] {ex}");
+                $"Aimbot [FAIL] {ex}".printf();
             }
         }
 
@@ -313,7 +313,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                     {
                         _lastRandomBone = Config.RandomBone.GetRandomBone();
                         _lastShotIndex = shotIndex;
-                        LoneLogging.WriteLine($"New Random Bone {_lastRandomBone.GetDescription()} ({shotIndex})");
+                        $"New Random Bone {_lastRandomBone.GetDescription()} ({shotIndex})".printf();
                     }
                     bone = _lastRandomBone;
                 }
@@ -401,7 +401,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"Silent Aim [FAIL] {ex}");
+                $"Silent Aim [FAIL] {ex}".printf();
                 ResetSilentAim();
             }
         }
@@ -499,7 +499,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"AIMBOT ERROR RecurseWeaponAttachVelocity() -> {ex}");
+                $"AIMBOT ERROR RecurseWeaponAttachVelocity() -> {ex}".printf();
             }
         }
 
@@ -523,7 +523,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                     var ammoTemplate = FirearmManager.MagazineManager.GetAmmoTemplateFromWeapon(Cache.ItemBase);
                     if (Cache.LoadedAmmo != ammoTemplate)
                     {
-                        LoneLogging.WriteLine("[Aimbot] Ammo changed!");
+                        "[Aimbot] Ammo changed!".printf();
                         Cache.Ballistics.BulletMassGrams = Memory.ReadValue<float>(ammoTemplate + Offsets.AmmoTemplate.BulletMassGram);
                         Cache.Ballistics.BulletDiameterMillimeters =
                             Memory.ReadValue<float>(ammoTemplate + Offsets.AmmoTemplate.BulletDiameterMilimeters);
@@ -551,7 +551,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"Aimbot [WARNING] - Unable to set/update Ballistics: {ex}");
+                $"Aimbot [WARNING] - Unable to set/update Ballistics: {ex}".printf();
             }
             /// Target Velocity
             Vector3 targetVelocity;
@@ -565,7 +565,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                 var sim = BallisticsSimulation.Run(ref sourcePosition, ref targetPosition, Cache.Ballistics);
                 if (Math.Abs(targetVelocity.X) > 25f || Math.Abs(targetVelocity.Y) > 25f || Math.Abs(targetVelocity.Z) > 25f)
                 {
-                    LoneLogging.WriteLine("[AIMBOT] -> RunPrediction(): Invalid Target Velocity - Running without prediction.");
+                    "[AIMBOT] -> RunPrediction(): Invalid Target Velocity - Running without prediction.".printf();
                 }
                 else
                 {
@@ -580,7 +580,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
             {
                 Cache.LoadedAmmo = default;
                 Cache.LastWeaponVersion = default;
-                LoneLogging.WriteLine("Aimbot [WARNING] - Invalid Ammo Ballistics! Running without prediction.");
+                "Aimbot [WARNING] - Invalid Ammo Ballistics! Running without prediction.".printf();
             }
 
             return Vector3.Normalize(targetPosition - sourcePosition); // Return direction
@@ -710,7 +710,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
             if (Memory.LocalPlayer is LocalPlayer localPlayer && ILocalPlayer.HandsController is ulong handsController && handsController.IsValidVirtualAddress())
             {
                 Memory.WriteValue(localPlayer.PWA + Offsets.ProceduralWeaponAnimation._shotDirection, new Vector3() { X = 0f, Y = -1f, Z = 0f });
-                LoneLogging.WriteLine("Silent Aim [SHOT DIRECTION RESET]");
+                "Silent Aim [SHOT DIRECTION RESET]".printf();
             }
         }
 

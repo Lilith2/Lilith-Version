@@ -4,7 +4,7 @@ using eft_dma_radar.UI.Radar;
 using eft_dma_radar.UI.SKWidgetControl;
 using eft_dma_shared.Common.ESP;
 using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Players;
 using eft_dma_shared.Common.Unity;
 
@@ -165,7 +165,7 @@ namespace eft_dma_radar.UI.ESP
             catch (Exception ex) // Log rendering errors
             {
                 var error = $"CRITICAL ESP WIDGET RENDER ERROR: {ex}";
-                LoneLogging.WriteLine(error);
+                error.printf();
             }
 
             _espCanvas.Flush();

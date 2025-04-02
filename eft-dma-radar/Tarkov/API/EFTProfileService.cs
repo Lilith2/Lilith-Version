@@ -1,6 +1,7 @@
 ﻿using eft_dma_radar.UI.Misc;
 using eft_dma_shared.Common.DMA;
-using eft_dma_shared.Common.Misc.Commercial;
+
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov.API
 {
@@ -105,7 +106,7 @@ namespace eft_dma_radar.Tarkov.API
                     }
                     catch (Exception ex)
                     {
-                        LoneLogging.WriteLine($"[EFTProfileService] ERROR: {ex}");
+                        $"[EFTProfileService] ERROR: {ex}".printf();
                     }
                     finally { await Task.Delay(250); } // Rate-Limit
                 }
@@ -166,13 +167,13 @@ namespace eft_dma_radar.Tarkov.API
                 using var response = await _client.GetAsync(url);
                 if (response.StatusCode is HttpStatusCode.NotFound)
                 {
-                    LoneLogging.WriteLine($"[EFTProfileService] Profile '{accountId}' not found by Tarkov.Dev.");
+                    $"[EFTProfileService] Profile '{accountId}' not found by Tarkov.Dev.".printf();
                     _tdevNotFound.Add(accountId);
                     return null;
                 }
                 if (response.StatusCode is HttpStatusCode.TooManyRequests) // Force Rate-Limit
                 {
-                    LoneLogging.WriteLine("[EFTProfileService] Rate-Limited by Tarkov.Dev - Pausing for 1 minute.");
+                    "[EFTProfileService] Rate-Limited by Tarkov.Dev - Pausing for 1 minute.".printf();
                     await Task.Delay(TimeSpan.FromMinutes(1));
                     return null;
                 }
@@ -180,12 +181,12 @@ namespace eft_dma_radar.Tarkov.API
                 using var stream = await response.Content.ReadAsStreamAsync();
                 var result = await JsonSerializer.DeserializeAsync<ProfileData>(stream) ??
                     throw new ArgumentNullException("result");
-                LoneLogging.WriteLine($"[EFTProfileService] Got Profile '{accountId}' via Tarkov.Dev!");
+                $"[EFTProfileService] Got Profile '{accountId}' via Tarkov.Dev!".printf();
                 return result;
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"[EFTProfileService] Unhandled ERROR looking up profile '{accountId}' via Tarkov.Dev: {ex}");
+                $"[EFTProfileService] Unhandled ERROR looking up profile '{accountId}' via Tarkov.Dev: {ex}".printf();
                 return null;
             }
         }
@@ -209,13 +210,13 @@ namespace eft_dma_radar.Tarkov.API
                 using var response = await _client.GetAsync(url);
                 if (response.StatusCode is HttpStatusCode.NotFound)
                 {
-                    LoneLogging.WriteLine($"[EFTProfileService] Profile '{accountId}' not found by eft-api.tech.");
+                    $"[EFTProfileService] Profile '{accountId}' not found by eft-api.tech.".printf();
                     _eftApiNotFound.Add(accountId);
                     return null;
                 }
                 if (response.StatusCode is HttpStatusCode.TooManyRequests) // Force Rate-Limit
                 {
-                    LoneLogging.WriteLine("[EFTProfileService] Rate-Limited by eft-api.tech - Pausing for 1 minute.");
+                    "[EFTProfileService] Rate-Limited by eft-api.tech - Pausing for 1 minute.".printf();
                     await Task.Delay(TimeSpan.FromMinutes(1));
                     return null;
                 }
@@ -223,12 +224,12 @@ namespace eft_dma_radar.Tarkov.API
                 using var stream = await response.Content.ReadAsStreamAsync();
                 var result = await JsonSerializer.DeserializeAsync<ProfileResponseContainer>(stream) ??
                     throw new ArgumentNullException("result");
-                LoneLogging.WriteLine($"[EFTProfileService] Got Profile '{accountId}' via eft-api.tech!");
+                $"[EFTProfileService] Got Profile '{accountId}' via eft-api.tech!".printf();
                 return result.Data;
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"[EFTProfileService] Unhandled ERROR looking up profile '{accountId}' via eft-api.tech: {ex}");
+                $"[EFTProfileService] Unhandled ERROR looking up profile '{accountId}' via eft-api.tech: {ex}".printf();
                 return null;
             }
         }

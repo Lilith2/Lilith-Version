@@ -1,6 +1,7 @@
 ﻿using eft_dma_shared.Common.DMA.ScatterAPI;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity.Collections;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov.GameWorld.Exits
 {
@@ -90,7 +91,7 @@ namespace eft_dma_radar.Tarkov.GameWorld.Exits
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"[ExitManager] Refresh Error: {ex}");
+                $"[DMA] [ExitManager] Refresh Error: {ex}".printf();
             }
         }
 

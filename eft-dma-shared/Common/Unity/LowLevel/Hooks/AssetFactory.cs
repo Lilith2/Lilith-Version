@@ -1,5 +1,6 @@
-﻿using eft_dma_shared.Common.Misc.Commercial;
+﻿
 using System.Runtime.CompilerServices;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
 {
@@ -31,20 +32,20 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
             _loadedBundle = NativeHook.Call(assetBundle_LoadFromMemory, assetBundle, 0) ?? 0;
             if (_loadedBundle == 0x0)
             {
-                LoneLogging.WriteLine($"[LoadBundle] -> {bundle} Unable to load asset bundle from " + assetBundle.ToString("X"));
+                $"[LoadBundle] -> {bundle} Unable to load asset bundle from {assetBundle:X}".printf();
                 return false;
             }
             else
-                LoneLogging.WriteLine("[LoadBundle] -> Asset Bundle created at " + _loadedBundle.ToString("X"));
+                $"[LoadBundle] -> Asset Bundle created at {_loadedBundle:X}".printf();
 
             _loadedShader = NativeHook.Call(assetBundle_LoadAsset, _loadedBundle, shaderName, shaderTypeObject) ?? 0;
             if (_loadedShader == 0x0)
             {
-                LoneLogging.WriteLine("[LoadBundle] -> Unable to load shader from name at " + shaderName.ToString("X") + " from asset bundle at " + _loadedBundle.ToString("X"));
+                $"[LoadBundle] -> Unable to load shader from name at {shaderName:X} from asset bundle at {_loadedBundle:X}".printf();
                 return false;
             }
             else
-                LoneLogging.WriteLine("[LoadBundle] -> Shader created at " + _loadedShader.ToString("X"));
+                $"[LoadBundle] -> Shader created at {_loadedShader:X}".printf();
 
             return true;
         }

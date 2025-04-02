@@ -25,8 +25,7 @@ namespace eft_dma_radar.UI.Misc
         public bool MemWritesEnabled => this.MemWrites.MemWritesEnabled;
         [JsonIgnore]
         public LowLevelCache LowLevelCache => this.Cache.LowLevel;
-        [JsonIgnore]
-        public ChamsConfig ChamsConfig => this.MemWrites.Chams;
+
         [JsonIgnore]
         public bool AdvancedMemWrites => this.MemWrites.AdvancedMemWrites;
 
@@ -721,12 +720,6 @@ namespace eft_dma_radar.UI.Misc
         /// </summary>
         [JsonPropertyName("enableInfStamina2")]
         public bool InfStamina { get; set; } = false;
-
-        /// <summary>
-        /// Chams Feature Config
-        /// </summary>
-        [JsonPropertyName("chams")]
-        public ChamsConfig Chams { get; set; } = new();
 
         /// <summary>
         /// Enable Always Day Feature on Startup.

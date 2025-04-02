@@ -10,7 +10,6 @@ using eft_dma_radar.Tarkov.GameWorld;
 using eft_dma_radar.Tarkov.GameWorld.Exits;
 using eft_dma_radar.Tarkov.GameWorld.Explosives;
 using eft_dma_radar.Tarkov.Loot;
-using eft_dma_radar.Tarkov.WebRadar;
 using eft_dma_radar.UI.ColorPicker;
 using eft_dma_radar.UI.ColorPicker.ESP;
 using eft_dma_radar.UI.ColorPicker.Radar;
@@ -24,7 +23,7 @@ using eft_dma_shared.Common.Features;
 using eft_dma_shared.Common.Features.MemoryWrites;
 using eft_dma_shared.Common.Maps;
 using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Misc.Data;
 using eft_dma_shared.Common.Unity;
 using eft_dma_shared.Common.Unity.LowLevel;
@@ -426,7 +425,7 @@ namespace eft_dma_radar.UI.Radar
             }
             catch (Exception ex) // Log rendering errors
             {
-                LoneLogging.WriteLine($"CRITICAL RENDER ERROR: {ex}");
+                $"CRITICAL RENDER ERROR: {ex}".printf();
             }
         }
         private void DrawSelectedLootLine(SKCanvas canvas, Player localPlayer, LoneMapParams mapParams)
@@ -562,12 +561,6 @@ namespace eft_dma_radar.UI.Radar
         {
             Config.AIAimlines = checkBox_AIAimlines.Checked;
         }
-
-        private void checkBox_AntiPage_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.Config.MemWrites.AntiPage = checkBox_AntiPage.Checked;
-        }
-
         private void radioButton_Loot_FleaPrice_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButton_Loot_FleaPrice.Checked)
@@ -641,11 +634,6 @@ namespace eft_dma_radar.UI.Radar
 
         private void ToggleAdvMemwriteFeatures(bool enabled)
         {
-            radioButton_Chams_VisCheckGlow.Enabled = enabled;
-            radioButton_Chams_VischeckFlat.Enabled = enabled;
-            radioButton_Chams_VisCheckWireframe.Enabled = enabled;
-            radioButton_Chams_Visible.Enabled = enabled;
-            checkBox_AntiPage.Enabled = enabled;
             checkBox_streamerMode.Enabled = enabled;
             checkBox_hideRaidcode.Enabled = enabled;
         }
@@ -663,41 +651,6 @@ namespace eft_dma_radar.UI.Radar
             bool enabled = checkBox_ShowContainers.Checked;
             Config.Containers.Show = enabled;
             flowLayoutPanel_Loot_Containers.Enabled = enabled;
-        }
-
-        private void checkBox_NoWepMalf_CheckedChanged(object sender, EventArgs e)
-        {
-            MemPatchFeature<NoWepMalfPatch>.Instance.Enabled = checkBox_NoWepMalf.Checked;
-        }
-        private async void button_AntiAfk_Click(object sender, EventArgs e)
-        {
-            button_AntiAfk.Text = "Please Wait...";
-            button_AntiAfk.Enabled = false;
-            try
-            {
-                await Task.Run(() => // Run on non ui thread
-                {
-                    MemWriteFeature<AntiAfk>.Instance.Set();
-                });
-                MessageBox.Show("Anti-AFK is Set!\n\n" +
-                    "NOTE: If you leave the Main Menu, you may need to re-set this.",
-                    Program.Name,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("ERROR Setting Anti-AFK! Your memory may be paged out, try close and re-open the game and try again.\n\n" +
-                    $"{ex}",
-                    Program.Name,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-            finally
-            {
-                button_AntiAfk.Text = "Anti-AFK";
-                button_AntiAfk.Enabled = true;
-            }
         }
         private void checkBox_AimRandomBone_CheckedChanged(object sender, EventArgs e)
         {
@@ -1520,14 +1473,6 @@ namespace eft_dma_radar.UI.Radar
             toolTip1.SetToolTip(button_VischeckInvisColorPick, "Set the INVISIBLE color of the Vischeck Chams. Must be set before chams are injected.");
             toolTip1.SetToolTip(checkBox_FastLoadUnload, "Allows you to pack/unpack magazines super fast.");
             toolTip1.SetToolTip(checkBox_FullBright, "Enables the Full Bright Feature. This will make the game world brighter.");
-            toolTip1.SetToolTip(checkBox_NoWepMalf, "Enables the No Weapons Malfunction feature. This prevents your gun from failing to fire due to misfires/overheating/etc.\n" +
-                "Once enabled this feature will remain enabled until you restart your game.\n" +
-                "Stream Safe!");
-            toolTip1.SetToolTip(button_AntiAfk, "Enables the Anti-AFK Feature. Prevents the game from closing due to inactivity.\n" +
-                "NOTE: Set this *right before* you go AFK while you are on the Tarkov Main Menu.\n" +
-                "NOTE: If you leave the Main Menu, you may need to re-set this.\n" +
-                "NOTE: If you have trouble setting this, your memory may be paged out. Try close/reopen the game.");
-            toolTip1.SetToolTip(checkBox_TeammateAimlines, "When enabled makes teammate aimlines the same length as the main player.");
             toolTip1.SetToolTip(button_Radar_ColorPicker, "Allows customizing entity colors on the Radar UI.");
             toolTip1.SetToolTip(button_EspColorPicker, "Allows customizing entity colors on the Fuser ESP.");
             toolTip1.SetToolTip(button_BackupConfig, "Backs up your configuration (Recommended).");
@@ -1654,13 +1599,6 @@ namespace eft_dma_radar.UI.Radar
                 "NOTE: It is possible to 're-lock' another target (or the same target) after unlocking.");
             toolTip1.SetToolTip(checkBox_AimRandomBone, "Will select a random aimbot bone after each shot. You can set custom percentage values for body zones.\nNOTE: This will supersede silent aim 'auto bone'.");
             toolTip1.SetToolTip(button_RandomBoneCfg, "Set random bone percentages (must add up to 100%).");
-            toolTip1.SetToolTip(checkBox_WebRadarUPNP, "Attempts to automatically Port Map using UPnP. If disabled, you will need to forward port(s) manually on your Router.");
-            toolTip1.SetToolTip(button_WebRadarStart, "Starts the Web Radar Service.");
-            toolTip1.SetToolTip(label_WebRadarHost, "Sets the IP Address/Hostname for the Web Radar Service to be bound to. Usually your LAN IP.");
-            toolTip1.SetToolTip(label_WebRadarPort, "Sets the Port (TCP) for the Web Radar Service to be bound to. Recommend using a random port between 50000-60000.");
-            toolTip1.SetToolTip(label_WebRadarPassword, "Randomized password for the Web Radar Service. This is used to authenticate with the Web Radar Service.");
-            toolTip1.SetToolTip(label_WebRadarTickRate, "Sets the Server Tickrate for the Web Radar Service. This is how often (per second) the server updates the client with new data.");
-            toolTip1.SetToolTip(linkLabel_WebRadarLink, "Web Radar Link to access the Web Radar Service. You can share this with your friend(s). Click to copy to clipboard.");
             toolTip1.SetToolTip(checkBox_ESP_FireportAim, "Shows the base fireport trajectory on screen so you can see where bullets will go. Disappears when ADS.");
             toolTip1.SetToolTip(checkBox_ESP_StatusText, "Displays status text in the top center of the screen (Aimbot Status, Wide Lean, etc.)");
             toolTip1.SetToolTip(checkBox_ShowContainers, "Shows static containers on the map. Due to recent Tarkov Anti-Cheat Measures, you cannot see what the contents are however.");
@@ -1674,8 +1612,6 @@ namespace eft_dma_radar.UI.Radar
                 "\n\nWARNING: These features use a riskier injection technique. Use at your own risk.");
             toolTip1.SetToolTip(radioButton_Loot_FleaPrice, "Loot prices use the optimal flea market price for the item based on ~realtime market value for displayed loot items.");
             toolTip1.SetToolTip(radioButton_Loot_VendorPrice, "Loot prices use the highest trader price for displayed loot items.");
-            toolTip1.SetToolTip(checkBox_AntiPage, "Attempts to prevent memory paging out. This can help if you are experiencing 'paging out' (see the FAQ in Discord).\n" +
-                "For best results start the Radar Client BEFORE opening the Game.");
             toolTip1.SetToolTip(checkBox_hideRaidcode, "Hides the Raid Code from displaying in the bottom left corner of the Game. Send your Cheating clips safely!");
             toolTip1.SetToolTip(checkBox_streamerMode, "Enables Streamer Mode. This will hide your player name, change your level and other things from displaying in the Game:\n" +
                 "- To disable uncheck the box and restart game\n" +
@@ -1724,7 +1660,6 @@ namespace eft_dma_radar.UI.Radar
             /// Set Features
             checkBox_hideRaidcode.Checked = MemPatchFeature<HideRaidCode>.Instance.Enabled;
             checkBox_streamerMode.Checked = MemPatchFeature<StreamerMode>.Instance.Enabled;
-            checkBox_AntiPage.Checked = Config.MemWrites.AntiPage;
             checkBox_EnableMemWrite.Checked = MemWrites.Enabled;
             checkBox_NoRecoilSway.Checked = MemWriteFeature<NoRecoil>.Instance.Enabled;
             trackBar_NoRecoil.Value = MemWrites.Config.NoRecoilAmount;
@@ -1739,7 +1674,6 @@ namespace eft_dma_radar.UI.Radar
             checkBox_AimRandomBone.Checked = Aimbot.Config.RandomBone.Enabled;
 
             checkBox_NoVisor.Checked = MemWriteFeature<NoVisor>.Instance.Enabled;
-            checkBox_NoWepMalf.Checked = MemPatchFeature<NoWepMalfPatch>.Instance.Enabled;
             checkBox_FullBright.Checked = MemWriteFeature<FullBright>.Instance.Enabled;
             checkBox_FastLoadUnload.Checked = MemPatchFeature<FastLoadUnload>.Instance.Enabled;
 
@@ -1848,7 +1782,7 @@ namespace eft_dma_radar.UI.Radar
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR Setting Aim UI Text: {ex}");
+                $"ERROR Setting Aim UI Text: {ex}".printf();
             }
         }
 
@@ -1876,11 +1810,6 @@ namespace eft_dma_radar.UI.Radar
             checkBox_ShowMines.Checked = Config.ShowMines;
             checkBox_TeammateAimlines.Checked = Config.TeammateAimlines;
             checkBox_AIAimlines.Checked = Config.AIAimlines;
-            checkBox_WebRadarUPNP.Checked = Config.WebRadar.UPnP;
-            textBox_WebRadarBindIP.Text = Config.WebRadar.IP;
-            textBox_WebRadarPort.Text = Config.WebRadar.Port;
-            textBox_WebRadarTickRate.Text = Config.WebRadar.TickRate;
-            textBox_WebRadarPassword.Text = WebRadarServer.Password;
             checkBox_Aimview.Checked = Config.ESPWidgetEnabled;
             trackBar_UIScale.Value = (int)Math.Round(Config.UIScale * 100);
             numericUpDown_MaxDist.Value = (int)Config.MaxDistance;
@@ -3171,89 +3100,6 @@ namespace eft_dma_radar.UI.Radar
         }
         #endregion
 
-        #endregion
-
-        #region Web Radar
-
-        /// <summary>
-        /// Startup Web Radar. Can only be done once for the program lifetime.
-        /// </summary>
-        private async void StartWebRadar()
-        {
-            button_WebRadarStart.Enabled = false;
-            checkBox_WebRadarUPNP.Enabled = false;
-            textBox_WebRadarTickRate.Enabled = false;
-            textBox_WebRadarBindIP.Enabled = false;
-            textBox_WebRadarPort.Enabled = false;
-            button_WebRadarStart.Text = "Starting...";
-            try
-            {
-                var tickRate = TimeSpan.FromMilliseconds(1000d / int.Parse(textBox_WebRadarTickRate.Text.Trim()));
-                string bindIP = "192.168.1.27"; //textBox_WebRadarBindIP.Text.Trim();
-                int port = 5000;//int.Parse(textBox_WebRadarPort.Text.Trim());
-                var externalIP = await WebRadarServer.GetExternalIPAsync();
-                await WebRadarServer.StartAsync(bindIP, port, tickRate, checkBox_WebRadarUPNP.Checked);
-                button_WebRadarStart.Text = "Running...";
-                linkLabel_WebRadarLink.Text = $"http://fd-mambo.org:8080/?host={externalIP}&port={port}&password={textBox_WebRadarPassword.Text}";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, $"ERROR Starting Web Radar Server: {ex.Message}", Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                button_WebRadarStart.Text = "Start";
-                button_WebRadarStart.Enabled = true;
-                checkBox_WebRadarUPNP.Enabled = true;
-                textBox_WebRadarTickRate.Enabled = true;
-                textBox_WebRadarBindIP.Enabled = true;
-                textBox_WebRadarPort.Enabled = true;
-            }
-        }
-        private async void StartWebEsp()
-        {
-            button_EspServerStart.Text = "Starting...";
-            try
-            {
-                string bindIP = "192.168.1.27";//textBox_WebRadarBindIP.Text.Trim();
-                int port = 5000;//int.Parse(textBox_WebRadarPort.Text.Trim());
-                var externalIP = await WebRadarServer.GetExternalIPAsync();
-                await EspServer.StartEspServer(bindIP, port);
-                button_EspServerStart.Text = "Running...";
-                linkLabel_WebRadarLink.Text = $"host={bindIP}&port={port}&password={textBox_WebRadarPassword.Text}";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, $"ERROR Starting Esp Radar Server: {ex.Message}", Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                button_EspServerStart.Text = "Start";
-            }
-        }
-
-        private void button_WebRadarStart_Click(object sender, EventArgs e) =>
-            StartWebRadar();
-        private void button_EspServerStart_Click(object sender, EventArgs e) =>
-            StartWebEsp();
-
-        private void checkBox_WebRadarUPNP_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.WebRadar.UPnP = checkBox_WebRadarUPNP.Checked;
-        }
-
-        private void textBox_WebRadarHost_TextChanged(object sender, EventArgs e)
-        {
-            Config.WebRadar.IP = textBox_WebRadarBindIP.Text;
-        }
-
-        private void textBox_WebRadarPort_TextChanged(object sender, EventArgs e)
-        {
-            Config.WebRadar.Port = textBox_WebRadarPort.Text;
-        }
-        private void textBox_WebRadarTickRate_TextChanged(object sender, EventArgs e)
-        {
-            Config.WebRadar.TickRate = textBox_WebRadarTickRate.Text;
-        }
-        private void linkLabel_WebRadarLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Clipboard.SetText(linkLabel_WebRadarLink.Text);
-            MessageBox.Show(this, "Copied to clipboard!");
-        }
         #endregion
 
         #region Containers

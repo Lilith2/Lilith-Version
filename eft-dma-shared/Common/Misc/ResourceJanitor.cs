@@ -1,6 +1,7 @@
-﻿using eft_dma_shared.Common.Misc.Commercial;
+﻿
 using System.Runtime;
 using System.Runtime.InteropServices;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_shared.Common
 {
@@ -28,7 +29,7 @@ namespace eft_dma_shared.Common
                     var info = new MEMORYSTATUSEX();
                     if (GlobalMemoryStatusEx(ref info) && info.dwMemoryLoad >= 90) // Over 90% memory usage
                     {
-                        LoneLogging.WriteLine("[ResourceJanitor] High Memory Load, running cleanup...");
+                        "[DMA] High Memory Load, running cleanup...".printf();
                         Run(false);
                     }
                 }
@@ -67,7 +68,7 @@ namespace eft_dma_shared.Common
                 }
                 catch (Exception ex)
                 {
-                    LoneLogging.WriteLine($"ResourceJanitor ERROR: {ex}");
+                    $"[DMA] ResourceJanitor Error: {ex}".printf();
                 }
             }
         }

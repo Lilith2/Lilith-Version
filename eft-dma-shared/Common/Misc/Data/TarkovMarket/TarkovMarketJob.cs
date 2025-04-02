@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using System.Net.Http.Headers;
 using System.Net;
 using System.Text.Json;
-using eft_dma_shared.Common.Misc.Commercial;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_shared.Common.Misc.Data.TarkovMarket
 {
@@ -23,7 +23,7 @@ namespace eft_dma_shared.Common.Misc.Data.TarkovMarket
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"{nameof(TarkovMarketJob)} [FAIL]: {ex}");
+                $"{nameof(TarkovMarketJob)} [FAIL]: {ex}".printf();
                 throw;
             }
         }

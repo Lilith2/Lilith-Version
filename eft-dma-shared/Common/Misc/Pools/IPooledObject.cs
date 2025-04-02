@@ -1,6 +1,7 @@
-﻿using eft_dma_shared.Common.Misc.Commercial;
+﻿
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_shared.Common.Misc.Pools
 {
@@ -47,7 +48,7 @@ namespace eft_dma_shared.Common.Misc.Pools
             }
             else
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR: Unable to return '{obj.GetType()}' object to the ObjectPool!");
+                $"CRITICAL ERROR: Unable to return '{obj.GetType()}' object to the ObjectPool!".printf();
             }
         }
 
@@ -64,7 +65,7 @@ namespace eft_dma_shared.Common.Misc.Pools
                 }
                 else
                 {
-                    //LoneLogging.WriteLine($"{DateTime.UtcNow.Ticks}: New Pool Obj {typeof(T)}");
+                    //$"{DateTime.UtcNow.Ticks}: New Pool Obj {typeof(T)}".printf();
                     return Activator.CreateInstance<T>();
                 }
             }

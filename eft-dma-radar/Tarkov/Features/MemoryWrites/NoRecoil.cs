@@ -2,7 +2,8 @@
 using eft_dma_radar.Tarkov.Features;
 using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_shared.Common.Features;
-using eft_dma_shared.Common.Misc.Commercial;
+
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov.Features.MemoryWrites
 {
@@ -67,14 +68,14 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                     if (breathAmt != newSway)
                     {
                         writes.AddValueEntry(breathEff + Offsets.BreathEffector.Intensity, newSway);
-                        LoneLogging.WriteLine($"NoRecoil BreathEffector {breathAmt} -> {newSway}");
+                        $"NoRecoil BreathEffector {breathAmt} -> {newSway}".printf();
                     }
 
                     var recoilAmtVec = new Vector3(recoilAmt, recoilAmt, recoilAmt);
                     if (shotAmt != recoilAmtVec)
                     {
                         writes.AddValueEntry(newShotRecoil + Offsets.NewShotRecoil.IntensitySeparateFactors, recoilAmtVec);
-                        LoneLogging.WriteLine($"NoRecoil ShotEffector {shotAmt} -> {recoilAmtVec}");
+                        $"NoRecoil ShotEffector {shotAmt} -> {recoilAmtVec}".printf();
                     }
 
                     var resetMask = newSway > 0 && _lastSway == 0 || recoilAmt > 0 && _lastRecoil == 0;
@@ -88,13 +89,13 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                     void WriteMask(int newMask)
                     {
                         writes.AddValueEntry(localPlayer.PWA + Offsets.ProceduralWeaponAnimation.Mask, newMask);
-                        LoneLogging.WriteLine($"NoRecoil Mask {mask} -> {newMask}");
+                        $"NoRecoil Mask {mask} -> {newMask}".printf();
                     }
                 }
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR configuring NoRecoil/NoSway: {ex}");
+                $"ERROR configuring NoRecoil/NoSway: {ex}".printf();
             }
 
             static void ValidateSway(float amount)

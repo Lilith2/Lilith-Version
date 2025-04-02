@@ -10,7 +10,7 @@ using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_shared.Common.Unity;
 using eft_dma_radar.Tarkov.Features.MemoryWrites;
 using eft_dma_shared.Common.Misc.Data;
-using eft_dma_shared.Common.Misc.Commercial;
+
 
 namespace eft_dma_radar.Tarkov.GameWorld
 {
@@ -146,12 +146,12 @@ namespace eft_dma_radar.Tarkov.GameWorld
                 try
                 {
                     var instance = GetLocalGameWorld();
-                    LoneLogging.WriteLine("Raid has started!");
+                    "[DMA] Raid has started!".printf();
                     return instance;
                 }
                 catch (Exception ex)
                 {
-                    LoneLogging.WriteLine($"ERROR Instantiating Game Instance: {ex}");
+                    $"[DMA] ERROR Instantiating Game Instance: {ex}".printf();
                 }
                 finally
                 {
@@ -184,7 +184,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
                 }
 
                 var map = Memory.ReadUnityString(mapPtr, 64, false);
-                LoneLogging.WriteLine("Detected Map " + map);
+                $"[DMA] Detected Map {map}".printf();
                 if (!GameData.MapNames.ContainsKey(map)) // Also makes sure we're not in the hideout
                     throw new Exception("Invalid Map ID!");
                 return new LocalGameWorld(localGameWorld, map);
@@ -210,12 +210,12 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (RaidEnded)
             {
-                LoneLogging.WriteLine("Raid has ended!");
+                "[DMA] Raid has ended!".printf();
                 Dispose();
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR - Raid ended due to unhandled exception: {ex}");
+                $"[DMA] CRITICAL ERROR - Raid ended due to unhandled exception: {ex}".printf();
                 throw;
             }
         }
@@ -298,7 +298,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
                                     string name = ObjectClass.ReadName(generic, 128, false);
                                     if (name == "EftBattleUIScreen")
                                     {
-                                        LoneLogging.WriteLine("Raid has started!");
+                                        "[DMA] Raid has started!".printf();
                                         return _raidHasStarted = true;
                                     }
                                 }
@@ -330,7 +330,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             if (_disposed) return;
             try
             {
-                LoneLogging.WriteLine("Realtime thread starting...");
+                "[DMA] Realtime thread starting...".printf();
                 while (InRaid)
                 {
                     if (Program.Config.RatelimitRealtimeReads || !CameraManagerBase.EspRunning || (MemWriteFeature<Aimbot>.Instance.Enabled && Aimbot.Engaged))
@@ -344,12 +344,12 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR on Realtime Thread: {ex}"); // Log CRITICAL error
+                $"[DMA] CRITICAL ERROR on Realtime Thread: {ex}".printf(); // Log CRITICAL error
                 Dispose(); // Game object is in a corrupted state --> Dispose
             }
             finally
             {
-                LoneLogging.WriteLine("Realtime thread stopping...");
+                "[DMA] Realtime thread stopping...".printf();
             }
         }
 
@@ -384,7 +384,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR - UpdatePlayers Loop FAILED: {ex}");
+                $"[DMA] CRITICAL ERROR - UpdatePlayers Loop FAILED: {ex}".printf();
             }
         }
 
@@ -400,7 +400,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             if (_disposed) return;
             try
             {
-                LoneLogging.WriteLine("Misc thread starting...");
+                "[DMA] Misc thread starting...".printf();
                 while (InRaid)
                 {
                     ct.ThrowIfCancellationRequested();
@@ -413,12 +413,12 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR on Misc Thread: {ex}"); // Log CRITICAL error
+                $"[DMA] CRITICAL ERROR on Misc Thread: {ex}".printf(); // Log CRITICAL error
                 Dispose(); // Game object is in a corrupted state --> Dispose
             }
             finally
             {
-                LoneLogging.WriteLine("Misc thread stopping...");
+                "[DMA] Misc thread stopping...".printf();
             }
         }
 
@@ -440,7 +440,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
                 }
                 catch (Exception ex)
                 {
-                    LoneLogging.WriteLine($"[Wishlist] ERROR Refreshing: {ex}");
+                    $"[DMA] [Wishlist] ERROR Refreshing: {ex}".printf();
                 }
             }
             RefreshGear(); // Update gear periodically
@@ -460,7 +460,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
                 }
                 catch (Exception ex)
                 {
-                    LoneLogging.WriteLine($"[QuestManager] CRITICAL ERROR: {ex}");
+                    $"[DMA] [QuestManager] CRITICAL ERROR: {ex}".printf();
                 }
         }
 
@@ -504,7 +504,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR - ValidatePlayerTransforms Loop FAILED: {ex}");
+                $"[DMA] CRITICAL ERROR - ValidatePlayerTransforms Loop FAILED: {ex}".printf();
             }
         }
 
@@ -520,7 +520,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             if (_disposed) return;
             try
             {
-                LoneLogging.WriteLine("Grenades thread starting...");
+                "[DMA] Grenades thread starting...".printf();
                 while (InRaid)
                 {
                     ct.ThrowIfCancellationRequested();
@@ -533,12 +533,12 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR on Grenades Thread: {ex}"); // Log CRITICAL error
+                $"[DMA] CRITICAL ERROR on Grenades Thread: {ex}".printf(); // Log CRITICAL error
                 Dispose(); // Game object is in a corrupted state --> Dispose
             }
             finally
             {
-                LoneLogging.WriteLine("Grenades thread stopping...");
+                "[DMA] Grenades thread stopping...".printf();
             }
         }
 
@@ -555,7 +555,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             if (_disposed) return;
             try
             {
-                LoneLogging.WriteLine("FastWorker thread starting...");
+                "[DMA] FastWorker thread starting...".printf();
                 while (InRaid)
                 {
                     ct.ThrowIfCancellationRequested();
@@ -569,12 +569,12 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR on FastWorker Thread: {ex}"); // Log CRITICAL error
+                $"[DMA] CRITICAL ERROR on FastWorker Thread: {ex}".printf(); // Log CRITICAL error
                 Dispose(); // Game object is in a corrupted state --> Dispose
             }
             finally
             {
-                LoneLogging.WriteLine("FastWorker thread stopping...");
+                "[DMA] FastWorker thread stopping...".printf();
             }
         }
 

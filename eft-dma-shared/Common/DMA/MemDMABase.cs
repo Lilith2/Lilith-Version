@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using eft_dma_shared.Common.Misc;
 using eft_dma_shared.Common.DMA.ScatterAPI;
-using eft_dma_shared.Common.Misc.Commercial;
 using eft_dma_shared.Common.Unity.LowLevel.Hooks;
 
 namespace eft_dma_shared.Common.DMA
@@ -70,7 +69,7 @@ namespace eft_dma_shared.Common.DMA
 
         protected MemDMABase(FpgaAlgo fpgaAlgo, bool useMemMap)
         {
-            LoneLogging.WriteLine("Initializing DMA...");
+            //printf("Initializing DMA...");
             /// Check MemProcFS Versions...
             var vmmVersion = FileVersionInfo.GetVersionInfo("vmm.dll").FileVersion;
             var lcVersion = FileVersionInfo.GetVersionInfo("leechcore.dll").FileVersion;
@@ -87,7 +86,7 @@ namespace eft_dma_shared.Common.DMA
                 /// Begin Init...
                 if (useMemMap && !File.Exists(_memoryMapFile))
                 {
-                    LoneLogging.WriteLine("[DMA] No MemMap, attempting to generate...");
+                    "[DMA] No MemMap, attempting to generate...".printf();
                     _hVMM = new Vmm(initArgs);
                     var map = _hVMM.GetMemoryMap() ??
                         throw new Exception("Map_GetPhysMem FAIL");
@@ -107,7 +106,7 @@ namespace eft_dma_shared.Common.DMA
                 }
                 SetCustomVMMRefresh();
                 MemoryInterface.Memory = this;
-                LoneLogging.WriteLine("DMA Initialized!");
+                "[DMA] Initialized!".printf();
             }
             catch (Exception ex)
             {
@@ -144,13 +143,13 @@ namespace eft_dma_shared.Common.DMA
         private void memCacheRefreshTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (!_hVMM.SetConfig(Vmm.CONFIG_OPT_REFRESH_FREQ_MEM_PARTIAL, 1))
-                LoneLogging.WriteLine("WARNING: Vmm MEM CACHE Refresh (Partial) Failed!");
+                "[DMA] WARNING: Vmm MEM CACHE Refresh (Partial) Failed!".printf();
         }
 
         private void tlbRefreshTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (!_hVMM.SetConfig(Vmm.CONFIG_OPT_REFRESH_FREQ_TLB_PARTIAL, 1))
-                LoneLogging.WriteLine("WARNING: Vmm TLB Refresh (Partial) Failed!");
+                "[DMA] WARNING: Vmm TLB Refresh (Partial) Failed!".printf();
         }
 
         /// <summary>
@@ -159,7 +158,7 @@ namespace eft_dma_shared.Common.DMA
         public void FullRefresh()
         {
             if (!_hVMM.SetConfig(Vmm.CONFIG_OPT_REFRESH_ALL, 1))
-                LoneLogging.WriteLine("WARNING: Vmm FULL Refresh Failed!");
+                "[DMA] WARNING: Vmm FULL Refresh Failed!".printf();
         }
 
         #endregion
@@ -271,11 +270,6 @@ namespace eft_dma_shared.Common.DMA
 
             uint flags = useCache ? 0 : Vmm.FLAG_NOCACHE;
             using var hScatter = _hVMM.MemReadScatter2(_pid, flags, pagesToRead.ToArray());
-            if (AntiPage.Initialized)
-            {
-                foreach (var failed in hScatter.Failed)
-                    AntiPage.Register(failed, 8); // This is always one page at a time
-            }
 
             foreach (var entry in entries) // Second loop through all entries - PARSE RESULTS
             {
@@ -323,8 +317,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, cb);
                 throw;
             }
         }
@@ -366,8 +358,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, cb);
                 throw;
             }
         }
@@ -411,7 +401,7 @@ namespace eft_dma_shared.Common.DMA
                 {
                     if (!buffers[i].SequenceEqual(buffers[0]))
                     {
-                        LoneLogging.WriteLine($"[WARN] ReadBufferEnsure() -> 0x{addr:X} did not pass validation!");
+                        $"[WARN] ReadBufferEnsure() -> 0x{addr:X} did not pass validation!".printf();
                         return null;
                     }
                 }
@@ -461,8 +451,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)sizeof(T));
                 throw;
             }
         }
@@ -483,8 +471,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)sizeof(T));
                 throw;
             }
         }
@@ -516,8 +502,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)cb);
                 throw;
             }
         }
@@ -549,8 +533,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)cb);
                 throw;
             }
         }
@@ -627,8 +609,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)cb);
                 throw;
             }
         }
@@ -669,8 +649,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)cb);
                 throw;
             }
         }
@@ -693,8 +671,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)sizeof(T));
                 throw;
             }
         }
@@ -717,8 +693,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)sizeof(T));
                 throw;
             }
         }
@@ -740,8 +714,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)sizeof(T));
                 throw;
             }
         }
@@ -779,8 +751,6 @@ namespace eft_dma_shared.Common.DMA
             }
             catch (VmmException)
             {
-                if (AntiPage.Initialized)
-                    AntiPage.Register(addr, (uint)cb);
                 throw;
             }
         }

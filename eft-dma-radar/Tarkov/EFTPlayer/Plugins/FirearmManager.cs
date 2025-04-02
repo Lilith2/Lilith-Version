@@ -1,9 +1,9 @@
 ﻿using eft_dma_radar.UI.ESP;
 using eft_dma_radar.UI.Misc;
 using eft_dma_shared.Common.DMA.ScatterAPI;
-using eft_dma_shared.Common.ESP;
+
 using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Misc.Data;
 using eft_dma_shared.Common.Misc.Pools;
 using eft_dma_shared.Common.Players;
@@ -95,7 +95,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer.Plugins
                         }
                         catch (Exception ex)
                         {
-                            LoneLogging.WriteLine($"[FirearmManager] ERROR Updating Magazine: {ex}");
+                            $"[FirearmManager] ERROR Updating Magazine: {ex}".printf();
                             Magazine = new(_localPlayer);
                         }
                     }
@@ -109,7 +109,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer.Plugins
                         }
                         catch (Exception ex)
                         {
-                            LoneLogging.WriteLine($"[FirearmManager] ERROR Validating Fireport Transform: {ex}");
+                            $"[FirearmManager] ERROR Validating Fireport Transform: {ex}".printf();
                             ResetFireport();
                         }
                     }
@@ -126,7 +126,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer.Plugins
                         }
                         catch (Exception ex)
                         {
-                            LoneLogging.WriteLine($"[FirearmManager] ERROR Getting Fireport Transform: {ex}");
+                            $"[FirearmManager] ERROR Getting Fireport Transform: {ex}".printf();
                             ResetFireport();
                         }
                     }
@@ -134,7 +134,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer.Plugins
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"[FirearmManager] ERROR: {ex}");
+                $"[FirearmManager] ERROR: {ex}".printf();
             }
         }
 
@@ -151,7 +151,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer.Plugins
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"[FirearmManager] ERROR Updating Fireport Data: {ex}");
+                $"[FirearmManager] ERROR Updating Fireport Data: {ex}".printf();
                 ResetFireport();
             }
         }

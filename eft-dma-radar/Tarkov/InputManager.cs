@@ -1,8 +1,9 @@
 ﻿using eft_dma_radar.UI.Hotkeys;
 using eft_dma_shared.Common.DMA;
 using eft_dma_shared.Common.DMA.ScatterAPI;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov
 {
@@ -47,7 +48,7 @@ namespace eft_dma_radar.Tarkov
         /// </summary>
         private static void Worker()
         {
-            LoneLogging.WriteLine("InputManager thread starting...");
+            "InputManager thread starting...".printf();
             while (true)
             {
                 try

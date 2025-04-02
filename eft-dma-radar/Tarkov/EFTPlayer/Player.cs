@@ -16,7 +16,6 @@ using eft_dma_shared.Common.Maps;
 using eft_dma_radar.Tarkov.Features.MemoryWrites;
 using eft_dma_shared.Common.ESP;
 using eft_dma_shared.Common.Misc.Data;
-using eft_dma_shared.Common.Misc.Commercial;
 using eft_dma_shared.Common.Misc.Pools;
 using eft_dma_shared.Common.DMA;
 
@@ -115,11 +114,11 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
             {
                 var player = AllocateInternal(playerBase);
                 playerDict[player] = player; // Insert or swap
-                LoneLogging.WriteLine($"Player '{player.Name}' allocated.");
+                $"Player '{player.Name}' allocated.".printf();
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR during Player Allocation for player @ 0x{playerBase.ToString("X")}: {ex}");
+                $"ERROR during Player Allocation for player @ 0x{playerBase.ToString("X")}: {ex}".printf();
             }
             finally
             {
@@ -254,7 +253,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
         /// Player name.
         /// </summary>
         public virtual string Name { get; set; }
-        public PlayerProfile Profile { get; private set; }    
+        public PlayerProfile Profile { get; private set; }
         public float KD => Profile.Overall_KD ?? 0f;
         public int TotalHoursPlayed => Profile.Hours ?? 0;
         /// <summary>
@@ -529,7 +528,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
                             }
                             catch (Exception ex) // Attempt to re-allocate Transform on error
                             {
-                                LoneLogging.WriteLine($"ERROR getting Player '{this.Name}' {tr.Key} Position: {ex}");
+                                $"ERROR getting Player '{this.Name}' {tr.Key} Position: {ex}".printf();
                                 this.Skeleton.ResetTransform(tr.Key);
                             }
                         }
@@ -573,8 +572,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
                         {
                             if (tr.Value.VerticesAddr != verticesPtr) // check if any addr changed
                             {
-                                LoneLogging.WriteLine(
-                                    $"WARNING - '{tr.Key}' Transform has changed for Player '{this.Name}'");
+                                $"WARNING - '{tr.Key}' Transform has changed for Player '{this.Name}'".printf();
                                 this.Skeleton.ResetTransform(tr.Key); // alloc new transform
                             }
                         }
@@ -618,7 +616,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"[GearManager] ERROR for Player {Name}: {ex}");
+                $"[GearManager] ERROR for Player {Name}: {ex}".printf();
             }
         }
 
@@ -814,7 +812,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
                     Name = "Bear",
                     Type = PlayerType.AIScav
                 };
-            LoneLogging.WriteLine($"Unknown Voice Line: {voiceLine}");
+            $"Unknown Voice Line: {voiceLine}".printf();
             return new AIRole()
             {
                 Name = "AI",
@@ -1193,165 +1191,13 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
                         Type = PlayerType.AIBoss
                     };
                 default:
-                    LoneLogging.WriteLine("WARNING: Unknown WildSpawnType: " + (int)wildSpawnType);
+                    $"WARNING: Unknown WildSpawnType: {(int)wildSpawnType}".printf();
                     return new AIRole()
                     {
                         Name = "defaultAI",
                         Type = PlayerType.AIScav
                     };
             }
-        }
-
-        #endregion
-
-        #region Chams Feature
-
-        /// <summary>
-        /// 0 = None, otherwise value of enum ChamsMode
-        /// </summary>
-        public ChamsManager.ChamsMode ChamsMode { get; private set; }
-
-
-        /// <summary>
-        /// Apply Chams to CurrentPlayer (if not already set).
-        /// </summary>
-        /// <param name="writes">Reusable scatter write handle.</param>
-        /// <param name="game">Current gameworld instance.</param>
-        /// <param name="chamsMode">Chams mode being applied.</param>
-        /// <param name="chamsMaterial">Chams material instance ID to write.</param>
-        public void SetChams(ScatterWriteHandle writes, LocalGameWorld game, ChamsManager.ChamsMode chamsMode, int chamsMaterial)
-        {
-            try
-            {
-                if (ChamsMode != chamsMode)
-                {
-                    writes.Clear();
-                    ApplyClothingChams(writes, chamsMaterial);
-                    if (chamsMode is not ChamsManager.ChamsMode.Basic)
-                    {
-                        ApplyGearChams(writes, chamsMaterial);
-                    }
-                    writes.Execute(DoWrite);
-                    LoneLogging.WriteLine($"Chams set OK for Player '{Name}'");
-                    ChamsMode = chamsMode;
-                }
-            }
-            catch (Exception ex)
-            {
-                LoneLogging.WriteLine($"ERROR setting Chams for Player '{Name}': {ex}");
-            }
-            bool DoWrite()
-            {
-                if (Memory.ReadValue<ulong>(this.CorpseAddr, false) != 0)
-                    return false;
-                if (!game.IsSafeToWriteMem)
-                    return false;
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Apply Clothing Chams to this Player.
-        /// </summary>
-        /// <param name="writes"></param>
-        /// <param name="chamsMaterial"></param>
-        private void ApplyClothingChams(ScatterWriteHandle writes, int chamsMaterial)
-        {
-            var pRendererContainersArray = Memory.ReadPtr(this.Body + Offsets.PlayerBody._bodyRenderers);
-            using var rendererContainersArray = MemArray<Types.BodyRendererContainer>.Get(pRendererContainersArray);
-            ArgumentOutOfRangeException.ThrowIfZero(rendererContainersArray.Count);
-
-            foreach (var rendererContainer in rendererContainersArray)
-            {
-                using var renderersArray = MemArray<ulong>.Get(rendererContainer.Renderers);
-                ArgumentOutOfRangeException.ThrowIfZero(renderersArray.Count);
-
-                foreach (var skinnedMeshRenderer in renderersArray)
-                {
-                    // Cached ptr to Renderer
-                    var renderer = Memory.ReadPtr(skinnedMeshRenderer + UnityOffsets.SkinnedMeshRenderer.Renderer);
-                    WriteChamsMaterial(writes, renderer, chamsMaterial);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Apply Gear Chams to this Player.
-        /// </summary>
-        /// <param name="writes"></param>
-        /// <param name="chamsMaterial"></param>
-        private void ApplyGearChams(ScatterWriteHandle writes, int chamsMaterial)
-        {
-            var slotViews = Memory.ReadValue<ulong>(this.Body + Offsets.PlayerBody.SlotViews);
-            if (!Utils.IsValidVirtualAddress(slotViews))
-                return;
-
-            var pSlotViewsDict = Memory.ReadValue<ulong>(slotViews + Offsets.SlotViewsContainer.Dict);
-            if (!Utils.IsValidVirtualAddress(pSlotViewsDict))
-                return;
-
-            using var slotViewsDict = MemDictionary<ulong, ulong>.Get(pSlotViewsDict);
-            if (slotViewsDict.Count == 0)
-                return;
-
-            foreach (var slot in slotViewsDict)
-            {
-                if (!Utils.IsValidVirtualAddress(slot.Value))
-                    continue;
-
-                var pDressesArray = Memory.ReadValue<ulong>(slot.Value + Offsets.PlayerBodySubclass.Dresses);
-                if (!Utils.IsValidVirtualAddress(pDressesArray))
-                    continue;
-
-                using var dressesArray = MemArray<ulong>.Get(pDressesArray);
-                if (dressesArray.Count == 0)
-                    continue;
-
-                foreach (var dress in dressesArray)
-                {
-                    if (!Utils.IsValidVirtualAddress(dress))
-                        continue;
-
-                    var pRenderersArray = Memory.ReadValue<ulong>(dress + Offsets.Dress.Renderers);
-                    if (!Utils.IsValidVirtualAddress(pRenderersArray))
-                        continue;
-
-                    using var renderersArray = MemArray<ulong>.Get(pRenderersArray);
-                    if (renderersArray.Count == 0)
-                        continue;
-
-                    foreach (var renderer in renderersArray)
-                    {
-                        if (!Utils.IsValidVirtualAddress(renderer))
-                            continue;
-
-                        ulong rendererNative = Memory.ReadValue<ulong>(renderer + 0x10);
-                        if (!Utils.IsValidVirtualAddress(rendererNative))
-                            continue;
-
-                        WriteChamsMaterial(writes, rendererNative, chamsMaterial);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Write Chams Material to the specified Renderer/Materials.
-        /// </summary>
-        /// <param name="writes"></param>
-        /// <param name="renderer"></param>
-        /// <param name="chamsMaterial"></param>
-        private static void WriteChamsMaterial(ScatterWriteHandle writes, ulong renderer, int chamsMaterial)
-        {
-            int materialsCount = Memory.ReadValueEnsure<int>(renderer + UnityOffsets.Renderer.Count);
-            ArgumentOutOfRangeException.ThrowIfLessThan(materialsCount, 0, nameof(materialsCount));
-            ArgumentOutOfRangeException.ThrowIfGreaterThan(materialsCount, 30, nameof(materialsCount));
-            if (materialsCount == 0)
-                return;
-            var materialsArrayPtr = Memory.ReadValueEnsure<ulong>(renderer + UnityOffsets.Renderer.Materials);
-            materialsArrayPtr.ThrowIfInvalidVirtualAddress();
-            var materials = Enumerable.Repeat<int>(chamsMaterial, materialsCount).ToArray();
-            writes.AddBufferEntry(materialsArrayPtr, materials.AsSpan());
         }
 
         #endregion
@@ -1416,7 +1262,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"WARNING! Player Draw Error: {ex}");
+                $"WARNING! Player Draw Error: {ex}".printf();
             }
         }
 
@@ -1435,9 +1281,9 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
             canvas.DrawCircle(point, size, SKPaints.ShapeOutline); // Draw outline
             canvas.DrawCircle(point, size, paints.Item1); // draw LocalPlayer marker
 
-            var aimlineLength = this == localPlayer || (this.IsFriendly && MainForm.Config.TeammateAimlines) ? 
+            var aimlineLength = this == localPlayer || (this.IsFriendly && MainForm.Config.TeammateAimlines) ?
                 MainForm.Config.AimLineLength : 15;
-            if (!IsFriendly && 
+            if (!IsFriendly &&
                 !(this.IsAI && !MainForm.Config.AIAimlines) &&
                 this.IsFacingTarget(localPlayer, Program.Config.MaxDistance)) // Hostile Player, check if aiming at a friendly (High Alert)
                 aimlineLength = 9999;

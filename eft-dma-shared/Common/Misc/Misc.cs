@@ -1,4 +1,4 @@
-﻿using eft_dma_shared.Common.Misc.Commercial;
+﻿
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Numerics;
@@ -122,14 +122,14 @@ namespace eft_dma_shared.Common.Misc
             if (!_first && _avgs.TryGetValue(_name, out var avgs)) // Skip first (JIT)
                 avgs.Add(ticks);
             if (_printEvery)
-                LoneLogging.WriteLine($"{_name} Runtime -> {ticks} ticks");
+                $"{_name} Runtime -> {ticks} ticks".printf();
         }
 
         public readonly void PrintAverage()
         {
             if (_avgs.TryGetValue(_name, out var avgs) &&
                 avgs.TryGetAverage(out var avg))
-                LoneLogging.WriteLine($"** {_name} Avg -> {avg} ticks");
+                $"** {_name} Avg -> {avg} ticks".printf();
         }
 
         /// <summary>

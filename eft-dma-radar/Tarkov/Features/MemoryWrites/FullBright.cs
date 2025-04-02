@@ -1,8 +1,9 @@
 ﻿using eft_dma_radar.Tarkov.Features;
 using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_shared.Common.Features;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov.Features.MemoryWrites
 {
@@ -37,7 +38,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                     writes.Callbacks += () =>
                     {
                         _set = true;
-                        LoneLogging.WriteLine("FullBright [On]");
+                        "FullBright [On]".printf();
                     };
                 }
                 else if (!Enabled && _set)
@@ -47,13 +48,13 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                     writes.Callbacks += () =>
                     {
                         _set = false;
-                        LoneLogging.WriteLine("FullBright [Off]");
+                        "FullBright [Off]".printf();
                     };
                 }
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR configuring FullBright: {ex}");
+                $"ERROR configuring FullBright: {ex}".printf();
             }
         }
 

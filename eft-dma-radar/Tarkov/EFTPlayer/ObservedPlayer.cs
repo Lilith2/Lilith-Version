@@ -4,11 +4,12 @@ using eft_dma_radar.Tarkov.Features.MemoryWrites.Patches;
 using eft_dma_radar.UI.ESP;
 using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_shared.Common.Features;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Misc.Data;
 using eft_dma_shared.Common.Players;
 using eft_dma_shared.Common.Unity;
 using static SDK.Enums;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov.EFTPlayer
 {
@@ -230,7 +231,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR updating Name for Player '{Name}': {ex}");
+                $"ERROR updating Name for Player '{Name}': {ex}".printf();
             }
         }
 
@@ -267,7 +268,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR updating Member Category for '{Name}': {ex}");
+                $"ERROR updating Member Category for '{Name}': {ex}".printf();
             }
         }
 
@@ -291,7 +292,7 @@ namespace eft_dma_radar.Tarkov.EFTPlayer
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR updating Health Status for '{Name}': {ex}");
+                $"ERROR updating Health Status for '{Name}': {ex}".printf();
             }
         }
 

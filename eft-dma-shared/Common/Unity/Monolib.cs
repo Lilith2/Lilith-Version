@@ -1,6 +1,6 @@
 ﻿using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_shared.Common.DMA;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Misc;
 using eft_dma_shared.Common.Unity.Collections;
 using System.Collections.Concurrent;
@@ -45,7 +45,7 @@ namespace eft_dma_shared.Common.Unity
         {
             try
             {
-                LoneLogging.WriteLine("Initializing Mono...");
+                "Initializing Mono...".printf();
                 var singletons = Singleton.FindMany("GameWorld", "LevelSettings");
                 if (!singletons[0].IsValidVirtualAddress())
                     throw new ArgumentOutOfRangeException("GameWorld");
@@ -55,7 +55,7 @@ namespace eft_dma_shared.Common.Unity
                     _levelSettingsField = singletons[1];
                 }
                 FunctionsWorker.Refresh(); // Signal Functions Worker
-                LoneLogging.WriteLine("Mono Init [OK]");
+                "Mono Init [OK]".printf();
             }
             catch (Exception ex)
             {
@@ -71,7 +71,7 @@ namespace eft_dma_shared.Common.Unity
         {
             try
             {
-                LoneLogging.WriteLine("Initializing Mono...");
+                "Initializing Mono...".printf();
                 var singletons = Singleton.FindMany("GameWorld", "AbstractGame");
                 if (!singletons[0].IsValidVirtualAddress())
                     throw new ArgumentOutOfRangeException("GameWorld");
@@ -80,7 +80,7 @@ namespace eft_dma_shared.Common.Unity
                 GameWorldField = singletons[0];
                 AbstractGameField = singletons[1];
                 FunctionsWorker.Refresh(); // Signal Functions Worker
-                LoneLogging.WriteLine("Mono Init [OK]");
+                "Mono Init [OK]".printf();
             }
             catch (Exception ex)
             {
@@ -581,7 +581,7 @@ namespace eft_dma_shared.Common.Unity
                 int methodCount = this.GetNumMethods();
                 if (methodCount > 5000)
                 {
-                    LoneLogging.WriteLine($"[MONO] FindMethod(): methodCount is out of bounds!");
+                    "[MONO] FindMethod(): methodCount is out of bounds!".printf();
                     return default;
                 }
 
@@ -740,7 +740,7 @@ namespace eft_dma_shared.Common.Unity
                 int rowCount = tableInfo.Value.GetRows();
                 if (rowCount > 25000)
                 {
-                    LoneLogging.WriteLine($"[MONO] -> FindClass(): rowCount is out of bounds!");
+                    "[MONO] -> FindClass(): rowCount is out of bounds!".printf();
                     return default;
                 }
                 // Subclass stuff
@@ -752,7 +752,7 @@ namespace eft_dma_shared.Common.Unity
                 if (findSubclass)
                     subclassParts = className.Split('+').ToList();
                 if (findSubclass && subclassParts.Count < 2)
-                    LoneLogging.WriteLine($"[MONO] -> FindClass(): Invalid subclass markup! The definition must have the main class name and at least one subclass.");
+                    "[MONO] -> FindClass(): Invalid subclass markup! The definition must have the main class name and at least one subclass.".printf();
                 for (int i = 0; i < rowCount; i++)
                 {
                     var ptr = MonoRead<MonoClass>(MonoRead<MonoHashTable>(monoImage + 0x4D0).Value.Lookup((ulong)(0x02000000 | i + 1)));
@@ -982,12 +982,12 @@ namespace eft_dma_shared.Common.Unity
                             _functions[function.pMonoMethod] = function.pJittedMethod;
                         }
                     }
-                    LoneLogging.WriteLine("Mono Init Funcs [OK]");
+                    "Mono Init Funcs [OK]".printf();
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    LoneLogging.WriteLine($"Mono Init Funcs [FAIL]: {ex}");
+                    $"Mono Init Funcs [FAIL]: {ex}".printf();
                     return false;
                 }
             }

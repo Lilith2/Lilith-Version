@@ -2,7 +2,7 @@
 using eft_dma_shared.Common.DMA;
 using eft_dma_shared.Common.Unity;
 using eft_dma_shared.Common.Unity.Collections;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_radar.Tarkov.EFTPlayer;
 
@@ -82,7 +82,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CheckIfScoped() ERROR: {ex}");
+                $"[DMA] CheckIfScoped() ERROR: {ex}".printf();
                 return false;
             }
         }

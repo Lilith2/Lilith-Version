@@ -1,5 +1,6 @@
-﻿using eft_dma_shared.Common.Misc.Commercial;
+﻿
 using eft_dma_shared.Common.Unity.Collections;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov.GameWorld.Explosives
 {
@@ -34,7 +35,7 @@ namespace eft_dma_radar.Tarkov.GameWorld.Explosives
                 }
                 catch (Exception ex)
                 {
-                    LoneLogging.WriteLine($"Error Refreshing Explosive @ 0x{explosive.Addr.ToString("X")}: {ex}");
+                    $"[DMA] Error Refreshing Explosive @ 0x{explosive.Addr.ToString("X")}: {ex}".printf();
                 }
             }
             GetGrenades();
@@ -63,14 +64,14 @@ namespace eft_dma_radar.Tarkov.GameWorld.Explosives
                     }
                     catch (Exception ex)
                     {
-                        LoneLogging.WriteLine($"Error Processing Grenade @ 0x{grenadeAddr.ToString("X")}: {ex}");
+                        $"[DMA] Error Processing Grenade @ 0x{grenadeAddr.ToString("X")}: {ex}".printf();
                     }
                 }
             }
             catch (Exception ex)
             {
                 _grenadesBase = 0x0;
-                LoneLogging.WriteLine($"Grenades Error: {ex}");
+                $"[DMA] Grenades Error: {ex}".printf();
             }
         }
 
@@ -95,13 +96,13 @@ namespace eft_dma_radar.Tarkov.GameWorld.Explosives
                     }
                     catch (Exception ex)
                     {
-                        LoneLogging.WriteLine($"Error Processing SyncObject @ 0x{syncObject.ToString("X")}: {ex}");
+                        $"[DMA] Error Processing SyncObject @ 0x{syncObject.ToString("X")}: {ex}".printf();
                     }
                 }
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"Sync Objects Error: {ex}");
+                $"[DMA] Sync Objects Error: {ex}".printf();
             }
         }
 
@@ -130,7 +131,7 @@ namespace eft_dma_radar.Tarkov.GameWorld.Explosives
                             }
                             catch (Exception ex)
                             {
-                                LoneLogging.WriteLine($"Error Processing Mortar Projectile @ 0x{activeProjectile.Value.ToString("X")}: {ex}");
+                                $"[DMA] Error Processing Mortar Projectile @ 0x{activeProjectile.Value.ToString("X")}: {ex}".printf();
                             }
                         }
                     }
@@ -138,7 +139,7 @@ namespace eft_dma_radar.Tarkov.GameWorld.Explosives
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"Mortar Projectiles Error: {ex}");
+                $"[DMA] Mortar Projectiles Error: {ex}".printf();
             }
         }
 

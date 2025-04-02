@@ -10,7 +10,7 @@ using eft_dma_radar.UI.Radar;
 using eft_dma_shared.Common.ESP;
 using eft_dma_shared.Common.Features;
 using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Misc.Data;
 using eft_dma_shared.Common.Players;
 using eft_dma_shared.Common.Unity;
@@ -253,7 +253,7 @@ namespace eft_dma_radar.UI.ESP
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ESP RENDER CRITICAL ERROR: {ex}");
+                $"ESP RENDER CRITICAL ERROR: {ex}".printf();
             }
             canvas.Flush();
         }
@@ -284,23 +284,7 @@ namespace eft_dma_radar.UI.ESP
                         label = $"{mode.GetDescription()}: {defaultBone.GetDescription()}";
                     }
                 }
-                if (MemWrites.Enabled)
-                {
-                    if (MemWriteFeature<WideLean>.Instance.Enabled)
-                    {
-                        if (label is null)
-                            label = "Lean";
-                        else
-                            label += " (Lean)";
-                    }
-                    else if (MemWriteFeature<MoveSpeed>.Instance.Enabled)
-                    {
-                        if (label is null)
-                            label = "MOVE";
-                        else
-                            label += " (MOVE)";
-                    }
-                }
+
                 if (label is null)
                     return;
                 var clientArea = skglControl_ESP.ClientRectangle;
@@ -319,7 +303,7 @@ namespace eft_dma_radar.UI.ESP
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR Setting ESP Status Text: {ex}");
+                $"ERROR Setting ESP Status Text: {ex}".printf();
             }
         }
 

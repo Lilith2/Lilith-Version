@@ -1,5 +1,5 @@
 ﻿using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity;
 using eft_dma_shared.Common.Unity.LowLevel.Types;
 using System;
@@ -64,7 +64,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
                 ulong result = FindGameObject((ulong)nameMonoStrMem);
 
                 if (result == 0x0)
-                    LoneLogging.WriteLine($"Game object \"{name}\" could not be found!");
+                    $"[DMA] Game object \"{name}\" could not be found!".printf();
                 
                 return result;
             }
@@ -128,7 +128,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
             ulong addr = AllocBytes(rwxSize);
             if (!addr.IsValidVirtualAddress())
             {
-                LoneLogging.WriteLine("[AllocRWX] -> Failed to allocate memory at " + addr.ToString("X"));
+                $"[DMA] Failed to allocate memory at {addr:X}".printf();
                 return 0;
             }
 
@@ -137,12 +137,12 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
             if (NativeHook.Call(mono_mprotect, addr, rwxSize, 7) is not ulong mprotectRet ||
                 mprotectRet != 0)
             {
-                LoneLogging.WriteLine("[AllocRWX] -> Failed to convert memory at " + addr.ToString("X") + " to RWX.");
+                $"[DMA] Failed to convert memory at {addr:X} to RWX.".printf();
                 _ = FreeBytes(addr);
                 return 0;
             }
 
-            LoneLogging.WriteLine("[AllocRWX] -> Allocated RWX memory at " + addr.ToString("X"));
+            $"[DMA] Allocated RWX memory at {addr:X}".printf();
 
             return addr;
         }

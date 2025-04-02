@@ -1,7 +1,8 @@
 ﻿using eft_dma_radar.Tarkov.EFTPlayer;
 using eft_dma_shared.Common.DMA.ScatterAPI;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity.Collections;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_radar.Tarkov.GameWorld
 {
@@ -51,7 +52,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
                     {
                         if (existingPlayer.ErrorTimer.ElapsedMilliseconds >= 1500) // Erroring out a lot? Re-Alloc
                         {
-                            LoneLogging.WriteLine($"WARNING - Existing player '{existingPlayer.Name}' being re-allocated due to excessive errors...");
+                            $"[DMA] WARNING - Existing player '{existingPlayer.Name}' being re-allocated due to excessive errors...".printf();
                             Player.Allocate(_players, playerBase);
                         }
                         // Nothing else needs to happen here
@@ -64,7 +65,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"CRITICAL ERROR - RegisteredPlayers Loop FAILED: {ex}");
+                $"[DMA] CRITICAL ERROR - RegisteredPlayers Loop FAILED: {ex}".printf();
             }
         }
 
@@ -109,7 +110,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             {
                 var btr = new BtrOperator(btrView, btrPlayerBase);
                 _players[btrPlayerBase] = btr;
-                LoneLogging.WriteLine("BTR Allocated!");
+                "[DMA] BTR Allocated!".printf();
             }
         }
 

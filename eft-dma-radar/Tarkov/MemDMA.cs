@@ -11,7 +11,8 @@
     using System.Runtime;
     using eft_dma_shared.Common.DMA;
     using eft_dma_shared.Common.Unity;
-    using eft_dma_shared.Common.Misc.Commercial;
+    
+    using eft_dma_shared.Common.Misc;
 
     namespace eft_dma_radar.Tarkov
     {
@@ -99,7 +100,7 @@
             /// </summary>
             private void MemoryPrimaryWorker()
             {
-                LoneLogging.WriteLine("Memory thread starting...");
+                "[DMA] Memory thread starting...".printf();
                 while (MainForm.Window is null)
                     Thread.Sleep(1);
                 while (true)
@@ -116,7 +117,7 @@
                     }
                     catch (Exception ex)
                     {
-                        LoneLogging.WriteLine($"FATAL ERROR on Memory Thread: {ex}");
+                        $"[DMA] FATAL ERROR on Memory Thread: {ex}".printf();
                         OnGameStopped();
                         Thread.Sleep(1000);
                     }
@@ -133,7 +134,7 @@
             /// </summary>
             private void RunStartupLoop()
             {
-                LoneLogging.WriteLine("New Game Startup");
+                "[DMA] New Game Startup".printf();
                 while (true) // Startup loop
                 {
                     try
@@ -147,12 +148,12 @@
                         InputManager.Initialize(UnityBase);
                         CameraManager.Initialize();
                         _ready = true;
-                        LoneLogging.WriteLine("Game Startup [OK]");
+                        "[DMA] Game Startup [OK]".printf();
                         break;
                     }
                     catch (Exception ex)
                     {
-                        LoneLogging.WriteLine($"Game Startup [FAIL]: {ex}");
+                        $"[DMA] Game Startup [FAIL]: {ex}".printf();
                         OnGameStopped();
                         Thread.Sleep(1000);
                     }
@@ -177,7 +178,7 @@
                             {
                                 if (_restartRadar)
                                 {
-                                    LoneLogging.WriteLine("Restarting Radar per User Request.");
+                                    "[DMA] Restarting Radar per User Request.".printf();
                                     _restartRadar = false;
                                     break;
                                 }
@@ -189,7 +190,7 @@
                     catch (GameNotRunning) { break; }
                     catch (Exception ex)
                     {
-                        LoneLogging.WriteLine($"CRITICAL ERROR in Game Loop: {ex}");
+                        $"[DMA] CRITICAL ERROR in Game Loop: {ex}".printf();
                         break;
                     }
                     finally
@@ -198,7 +199,7 @@
                         Thread.Sleep(100);
                     }
                 }
-                LoneLogging.WriteLine("Game is no longer running!");
+                "[DMA] Game is no longer running!".printf();
             }
 
             /// <summary>

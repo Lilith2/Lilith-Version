@@ -1,9 +1,10 @@
 ﻿using eft_dma_shared.Misc;
 using System.Diagnostics;
 using eft_dma_shared.Common.Misc.Config;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using System.Net.Http.Headers;
 using System.Net;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_shared
 {
@@ -76,7 +77,7 @@ namespace eft_dma_shared
                                            Native.EXECUTION_STATE.ES_DISPLAY_REQUIRED);
             var highPerformanceGuid = new Guid("8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c");
             if (Native.PowerSetActiveScheme(IntPtr.Zero, ref highPerformanceGuid) != 0)
-                LoneLogging.WriteLine("WARNING: Unable to set High Performance Power Plan");
+                $"[DMA] WARNING: Unable to set High Performance Power Plan".printf();
             /// Set Working Set limits for process
             TrySetProcessWorkingSetSize();
         }

@@ -1,7 +1,8 @@
 ﻿using eft_dma_shared.Common.ESP;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity;
 using SkiaSharp;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_shared.Common.Players
 {
@@ -74,12 +75,12 @@ namespace eft_dma_shared.Common.Players
         /// <param name="bone"></param>
         public void ResetTransform(Bones bone)
         {
-            LoneLogging.WriteLine($"Attempting to get new {bone} Transform for Player '{_player.Name}'...");
+            $"[DMA] Attempting to get new {bone} Transform for Player '{_player.Name}'...".printf();
             var transform = new UnityTransform(_bones[bone].TransformInternal);
             _bones[bone] = transform;
             if (bone is eft_dma_shared.Common.Unity.Bones.HumanBase)
                 Root = transform;
-            LoneLogging.WriteLine($"[OK] New {bone} Transform for Player '{_player.Name}'");
+            $"[DMA] New {bone} Transform for Player '{_player.Name}'".printf();
         }
 
         /// <summary>

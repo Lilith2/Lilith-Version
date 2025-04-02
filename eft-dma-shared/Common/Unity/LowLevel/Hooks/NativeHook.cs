@@ -1,6 +1,6 @@
 ﻿using eft_dma_shared.Common.DMA;
 using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using System.Buffers.Binary;
 using System.Diagnostics;
 using System.Reflection;
@@ -80,9 +80,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
                 _hookedMonoFunc = default;
                 _unityPlayerDll = default;
                 _monoDll = default;
-                ChamsManager.Reset();
                 AssetFactory.Reset();
-                AntiPage.Reset();
                 _ratelimit.Reset();
             }
         }
@@ -187,13 +185,13 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
                     // Success -> Set Cache
                     _codeCave = codeCave.Obfuscate();
                     SetCache();
-                    LoneLogging.WriteLine("[NativeHook]: Initialize() -> OK");
+                    "[DMA] Initialize() -> OK".printf();
                     return true;
                 }
                 catch (Exception ex)
                 {
                     _codeCave = default;
-                    LoneLogging.WriteLine($"[NativeHook]: Initialize() -> Exception: {ex}");
+                    $"[DMA] Initialize() -> Exception: {ex}".printf();
                     return false;
                 }
                 finally
@@ -230,7 +228,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
                 _hookedMonoFuncAddress = Cache.HookedMonoFuncAddress;
                 _hookedMonoFunc = Cache.HookedMonoFunc;
                 _codeCave = Cache.CodeCave;
-                LoneLogging.WriteLine("[NativeHook]: Initialize() -> Initialized from cache!");
+                "[DMA] Initialize() -> Initialized from cache!".printf();
                 return true;
             }
             return false;
@@ -267,12 +265,12 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
             {
                 if (!Initialized)
                 {
-                    LoneLogging.WriteLine("[NativeHook]: Call() -> Not initialized!");
+                    "[DMA] Call() -> Not initialized!".printf();
                     return null;
                 }
                 if (!function.IsValidVirtualAddress())
                 {
-                    LoneLogging.WriteLine("[NativeHook]: Call() -> Invalid input.");
+                    "[DMA] Call() -> Invalid input.".printf();
                     return null;
                 }
 
@@ -293,7 +291,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
                 }
                 catch
                 {
-                    LoneLogging.WriteLine("[NativeHook]: Call() -> Failed to write Shellcode Data.");
+                    "[DMA] Call() -> Failed to write Shellcode Data.".printf();
                     return null;
                 }
                 try
@@ -302,7 +300,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
                 }
                 catch
                 {
-                    LoneLogging.WriteLine("[NativeHook]: Call() -> *DANGER* Failed to patch Mono Invoke. Game may crash.");
+                    "[DMA] Call() -> *DANGER* Failed to patch Mono Invoke. Game may crash.".printf();
                     Thread.Sleep(150); // Maintain lock for a short period after this failure
                     return null;
                 }
@@ -317,7 +315,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
                         return data.result;
                     }
                 }
-                LoneLogging.WriteLine("[NativeHook]: Call() -> *DANGER* Method was never executed. Game may crash.");
+                "[DMA] Call() -> *DANGER* Method was never executed. Game may crash.".printf();
                 return null;
             }
         }

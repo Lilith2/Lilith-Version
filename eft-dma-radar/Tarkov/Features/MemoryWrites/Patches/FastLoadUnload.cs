@@ -3,7 +3,7 @@ using eft_dma_radar.Tarkov.Features;
 using eft_dma_radar.Tarkov.GameWorld;
 using eft_dma_shared.Common.Features;
 using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity;
 using eft_dma_shared.Common.Unity.LowLevel.Hooks;
 
@@ -78,7 +78,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites.Patches
                         if (!_set)
                         {
                             _set = true;
-                            LoneLogging.WriteLine("FastLoadUnload [ON]");
+                            "FastLoadUnload [ON]".printf();
                         }
                     }
                     else if (!Enabled && _set)
@@ -88,14 +88,14 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites.Patches
                         var magDrillsUnloadSpeedPtr = Memory.ReadPtr(skillsPtr + Offsets.SkillManager.MagDrillsUnloadSpeed);
                         Memory.WriteValue(magDrillsLoadSpeedPtr + Offsets.SkillValueContainer.Value, 25f);
                         Memory.WriteValue(magDrillsUnloadSpeedPtr + Offsets.SkillValueContainer.Value, 15f);
-                        LoneLogging.WriteLine("FastLoadUnload [OFF]");
+                        "FastLoadUnload [OFF]".printf();
                         _set = false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR configuring FastLoadUnload: {ex}");
+                $"ERROR configuring FastLoadUnload: {ex}".printf();
             }
             return true;
         }

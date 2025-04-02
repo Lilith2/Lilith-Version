@@ -1,5 +1,5 @@
 using eft_dma_shared.Common.Features;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Unity.LowLevel.Hooks;
 using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_shared.Common.Unity;
@@ -46,7 +46,7 @@ namespace eft_dma_shared.Common.Features.MemoryWrites
             {
                 if (!Enabled) return false;
 
-                LoneLogging.WriteLine("StreamerMode: Applying patches...");
+                "StreamerMode: Applying patches...".printf();
                 SpoofName();
                 PatchIsLocalStreamer();
                 //PatchDogtagNicknameP1();
@@ -55,44 +55,44 @@ namespace eft_dma_shared.Common.Features.MemoryWrites
                 DisableRightSide();
                 DisableNotifier();
 
-                LoneLogging.WriteLine("StreamerMode: Applied Successfully!");
+                "StreamerMode: Applied Successfully!".printf();
                 _set = true;
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR configuring StreamerMode: {ex}");
+                $"ERROR configuring StreamerMode: {ex}".printf();
                 return false;
             }
             return true;
         }
         private void DisableRightSide()
         {
-            LoneLogging.WriteLine("Disabling RightSide Panel...");
+            "Disabling RightSide Panel...".printf();
             ulong rightSide = NativeMethods.FindGameObjectS("Common UI/Common UI/InventoryScreen/Overall Panel/RightSide");
             if (rightSide != 0x0)
             {
                 NativeMethods.GameObjectSetActive(rightSide, false);
-                LoneLogging.WriteLine("RightSide Panel disabled!");
+                "RightSide Panel disabled!".printf();
                 _rightSideDisabled = true;
             }
             else
             {
-                LoneLogging.WriteLine("Failed to find RightSide Panel.");
+                "Failed to find RightSide Panel.".printf();
             }
         }
         private void DisableNotifier()
         {
-            LoneLogging.WriteLine("Disabling Notifier...");
+            "Disabling Notifier...".printf();
             ulong notifier = NativeMethods.FindGameObjectS("Preloader UI/Preloader UI/BottomPanel/Content/UpperPart/Notifier/Content");
             if (notifier != 0x0)
             {
                 NativeMethods.GameObjectSetActive(notifier, false);
-                LoneLogging.WriteLine("Notifier disabled!");
+                "Notifier disabled!".printf();
                 _notifierDisabled = true;
             }
             else
             {
-                LoneLogging.WriteLine("Failed to find Notifier.");
+                "Failed to find Notifier.".printf();
             }
         }          
         private void SpoofName()
@@ -106,7 +106,7 @@ namespace eft_dma_shared.Common.Features.MemoryWrites
             ulong usernameAddr = Memory.ReadPtr(profileInfo + Offsets.PlayerInfo.Nickname); // Username
             int originalUsernameLength = Memory.ReadValue<int>(usernameAddr + UnityOffsets.UnityString.Length);
 
-            LoneLogging.WriteLine($"Original Username Length: {originalUsernameLength}, Username Address: {usernameAddr}");
+            $"Original Username Length: {originalUsernameLength}, Username Address: {usernameAddr}".printf();
 
             using (var scatterWrite = new ScatterWriteHandle())
             {
@@ -152,7 +152,7 @@ namespace eft_dma_shared.Common.Features.MemoryWrites
             var mClass = MonoClass.Find("Assembly-CSharp", "EFT.InventoryLogic.DogtagComponent", out ulong classAddress);
             if (classAddress == 0x0)
             {
-                LoneLogging.WriteLine($"[ERROR] Class 'EFT.InventoryLogic.DogtagComponent' not found!");
+                $"[ERROR] Class 'EFT.InventoryLogic.DogtagComponent' not found!".printf();
                 return;
             }
 
@@ -160,7 +160,7 @@ namespace eft_dma_shared.Common.Features.MemoryWrites
             ulong compiledClass = NativeMethods.CompileClass(classAddress);
             if (compiledClass == 0x0)
             {
-                LoneLogging.WriteLine($"[ERROR] Unable to compile class 'EFT.InventoryLogic.DogtagComponent'!");
+                $"[ERROR] Unable to compile class 'EFT.InventoryLogic.DogtagComponent'!".printf();
                 return;
             }
 
@@ -168,11 +168,11 @@ namespace eft_dma_shared.Common.Features.MemoryWrites
             var methodPtr = mClass.FindMethod("\uE000"); 
             if (methodPtr == 0x0)
             {
-                LoneLogging.WriteLine($"[ERROR] Unable to find method '\uE000' in 'EFT.InventoryLogic.DogtagComponent' after compilation!");
+                $"[ERROR] Unable to find method '\uE000' in 'EFT.InventoryLogic.DogtagComponent' after compilation!".printf();
                 return;
             }
 
-            LoneLogging.WriteLine($"[INFO] Found method '\uE000' at 0x{methodPtr:X}");
+            $"[INFO] Found method '\uE000' at 0x{methodPtr:X}".printf();
 
             // Patch the method
             SignatureInfo sigInfo = new(DogtagNicknameP1Signature, DogtagNicknameP1Patch, 200);
@@ -217,12 +217,12 @@ namespace eft_dma_shared.Common.Features.MemoryWrites
             var mClass = MonoClass.Find("Assembly-CSharp", "EFT.InventoryLogic.DogtagComponent", out ulong classAddress);
             if (classAddress == 0x0)
             {
-                LoneLogging.WriteLine($"[DEBUG] Class 'EFT.InventoryLogic.DogtagComponent' not found!");
+                $"[DEBUG] Class 'EFT.InventoryLogic.DogtagComponent' not found!".printf();
                 return;
             }
 
             int methodCount = mClass.GetNumMethods();
-            LoneLogging.WriteLine($"[DEBUG] Methods of 'EFT.InventoryLogic.DogtagComponent': {methodCount} methods found.");
+            $"[DEBUG] Methods of 'EFT.InventoryLogic.DogtagComponent': {methodCount} methods found.".printf();
 
             for (int i = 0; i < methodCount; i++)
             {
@@ -233,7 +233,7 @@ namespace eft_dma_shared.Common.Features.MemoryWrites
                 string unicodeEscaped = string.Join("", methodName.Select(c => $"\\u{(int)c:X4}"));
                 ulong methodPtr = method;
 
-                LoneLogging.WriteLine($"[DEBUG] Method[{i}]: {methodName} (Unicode: {unicodeEscaped}) at 0x{methodPtr:X}");
+                $"[DEBUG] Method[{i}]: {methodName} (Unicode: {unicodeEscaped}) at 0x{methodPtr:X}".printf();
             }
         }
         private bool LevelGloballySpoofed = false;

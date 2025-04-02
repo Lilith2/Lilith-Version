@@ -3,7 +3,7 @@ using eft_dma_radar.Tarkov.Features;
 using eft_dma_shared.Common.DMA.ScatterAPI;
 using eft_dma_shared.Common.Features;
 using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Commercial;
+
 using eft_dma_shared.Common.Players;
 using eft_dma_shared.Common.Unity;
 using eft_dma_shared.Common.Unity.Collections;
@@ -52,7 +52,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                                 writes.Callbacks += () =>
                                 {
                                     _set = true;
-                                    LoneLogging.WriteLine("FastWeaponOps [On]");
+                                    "FastWeaponOps [On]".printf();
                                 };
                             }
                         }
@@ -68,7 +68,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                             writes.Callbacks += () =>
                             {
                                 _set = false;
-                                LoneLogging.WriteLine("FastWeaponOps [Off]");
+                                "FastWeaponOps [Off]".printf();
                             };
                         }
                     }
@@ -76,7 +76,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"ERROR configuring FastWeaponOps: {ex}");
+                $"ERROR configuring FastWeaponOps: {ex}".printf();
             }
 
             static void ThrowIfInvalidSpeed(float speed)

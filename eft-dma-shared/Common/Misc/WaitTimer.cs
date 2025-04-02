@@ -1,6 +1,7 @@
-﻿using eft_dma_shared.Common.Misc.Commercial;
+﻿
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using eft_dma_shared.Common.Misc;
 
 namespace eft_dma_shared.Common.Misc
 {
@@ -110,7 +111,7 @@ namespace eft_dma_shared.Common.Misc
             }
             catch (Exception ex)
             {
-                LoneLogging.WriteLine($"[WARNING] Unable to cleanup WaitTimer: {ex}");
+                $"[WARNING] Unable to cleanup WaitTimer: {ex}".printf();
                 return false;
             }
         }
