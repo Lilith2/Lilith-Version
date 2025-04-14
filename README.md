@@ -1,8 +1,7 @@
-# LoneEFT by Mambo
+#### 4/1/2025
+###### Client Changes
+- added all new market data code from Dreadful's fork manually into this version. Seems to work. It also added a loading bar to startup.
 
-In this project I will be slowly adding features, updates and anything else I want to personally use. 
-
-## Current Changes
-
- **- Added Loot Info Widget** 
- *Shows a loot table sorted by highest price, can click on each item to draw a line to its destination.*
+#### 4/14/2025
+- updated sdk.cs for new patch 16.5.6.36217
+- All features tested & working on SLIM. Sometimes tarkov.dev rate-limits me but other than we're good.
