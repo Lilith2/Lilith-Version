@@ -222,6 +222,13 @@ namespace eft_dma_radar.UI.Misc
         public Dictionary<RadarColorOption, string> Colors { get; set; } = RadarColorOptions.GetDefaultColors();
 
         /// <summary>
+        /// Entity type-specific display settings
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("entityTypeSettings")]
+        public EntityTypeSettingsConfig EntityTypeSettings { get; set; } = new EntityTypeSettingsConfig();
+
+        /// <summary>
         /// DMA Toolkit (Write Features) Config.
         /// </summary>
         [JsonInclude]
@@ -407,11 +414,29 @@ namespace eft_dma_radar.UI.Misc
         public bool Enabled { get; set; } = true;
 
         /// <summary>
+        /// Enables only processing kappa related quests
+        /// </summary>
+        [JsonPropertyName("kappaFilter")]
+        public bool KappaFilter { get; set; } = false;
+
+        /// <summary>
+        /// Enables processing optional related quest tasks
+        /// </summary>
+        [JsonPropertyName("optionalTaskFilter")]
+        public bool OptionalTaskFilter { get; set; } = false;
+
+        /// <summary>
+        /// Enables Quest Kill Zones
+        /// </summary>
+        [JsonPropertyName("killZones")]
+        public bool KillZones { get; set; } = true;
+
+        /// <summary>
         /// Quests that are overridden/disabled.
         /// </summary>
         [JsonPropertyName("blacklistedQuests")]
         [JsonInclude]
-        public HashSet<string> BlacklistedQuests { get; private set; } = new HashSet<string>();
+        public HashSet<string> BlacklistedQuests { get; set; } = new HashSet<string>();
     }
 
     public sealed class ContainersConfig
@@ -1099,5 +1124,102 @@ namespace eft_dma_radar.UI.Misc
         [JsonPropertyName("cache")]
         [JsonInclude]
         public ConcurrentDictionary<string, ProfileData> Profiles { get; private set; } = new();
+    }
+
+    /// <summary>
+    /// Configuration for entity type-specific display settings
+    /// </summary>
+    public sealed class EntityTypeSettingsConfig
+    {
+        /// <summary>
+        /// Settings for each entity type
+        /// </summary>
+        [JsonPropertyName("entityTypeSettings")]
+        public Dictionary<string, EntityTypeSettings> Settings { get; set; } = new Dictionary<string, EntityTypeSettings>();
+
+        /// <summary>
+        /// Initialize default settings for all entity types
+        /// </summary>
+        public void InitializeDefaults()
+        {
+            var entityTypes = new List<string>
+            {
+                "Airdrop",
+                "Corpse",
+                "RegularLoot",
+                "ImportantLoot",
+                "QuestItem",
+                "Switch",
+                "Transit",
+                "Exfil",
+                "Door",
+                "Grenmade",
+                "Tripwire",
+                "Mine",
+                "MortarProjectile"
+            };
+
+            foreach (var type in entityTypes)
+            {
+                if (!Settings.ContainsKey(type))
+                    Settings[type] = new EntityTypeSettings();
+            }
+        }
+
+        /// <summary>
+        /// Get settings for a specific entity type, create default if not exists
+        /// </summary>
+        public EntityTypeSettings GetSettings(string entityType)
+        {
+            if (!Settings.ContainsKey(entityType))
+                Settings[entityType] = new EntityTypeSettings();
+
+            return Settings[entityType];
+        }
+    }
+
+    /// <summary>
+    /// Settings for a specific entity type
+    /// </summary>
+    public sealed class EntityTypeSettings
+    {
+        [JsonPropertyName("information")]
+        [JsonInclude]
+        public HashSet<string> Information { get; set; } = new HashSet<string>
+        {
+            "Name",
+            "Distance",
+            "Value"
+        };
+
+        [JsonPropertyName("renderDistance")]
+        public int RenderDistance { get; set; } = 1500;
+
+        [JsonPropertyName("showRadius")]
+        public bool ShowRadius { get; set; } = false;
+
+        [JsonPropertyName("showLockedDoors")]
+        public bool ShowLockedDoors { get; set; } = true;
+
+        [JsonPropertyName("showUnlockedDoors")]
+        public bool ShowUnlockedDoors { get; set; } = true;
+
+        [JsonPropertyName("hideInactiveExfils")]
+        public bool HideInactiveExfils { get; set; } = false;
+
+        [JsonPropertyName("showTripwireLine")]
+        public bool ShowTripwireLine { get; set; } = false;
+
+        [JsonIgnore]
+        public bool Enabled => RenderDistance > 0;
+
+        [JsonIgnore]
+        public bool ShowName => Information.Contains("Name");
+
+        [JsonIgnore]
+        public bool ShowDistance => Information.Contains("Distance");
+
+        [JsonIgnore]
+        public bool ShowValue => Information.Contains("Value");
     }
 }

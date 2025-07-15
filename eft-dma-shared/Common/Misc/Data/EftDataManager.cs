@@ -159,6 +159,9 @@ namespace eft_dma_shared.Common.Misc.Data
             [JsonPropertyName("name")]
             public string Name { get; set; }
 
+            [JsonPropertyName("kappaRequired")]
+            public bool KappaRequired { get; set; }
+
             [JsonPropertyName("objectives")]
             public List<ObjectiveElement> Objectives { get; set; }
 
@@ -169,6 +172,9 @@ namespace eft_dma_shared.Common.Misc.Data
 
                 [JsonPropertyName("type")]
                 public string Type { get; set; }
+
+                [JsonPropertyName("optional")]
+                public bool Optional { get; set; }
 
                 [JsonPropertyName("description")]
                 public string Description { get; set; }
@@ -231,6 +237,9 @@ namespace eft_dma_shared.Common.Misc.Data
                 {
                     [JsonPropertyName("id")]
                     public string Id { get; set; }
+
+                    [JsonPropertyName("outline")]
+                    public List<PositionElement> Outline { get; set; }
 
                     [JsonPropertyName("position")]
                     public PositionElement Position { get; set; }
