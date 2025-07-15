@@ -66,6 +66,10 @@ namespace eft_dma_radar.Tarkov.GameWorld
         {
             _profile = profile;
             Refresh();
+            if (questInfoWidget.InvokeRequired)
+                questInfoWidget.Invoke(new Action(() => questInfoWidget.Invalidate()));
+            else
+                questInfoWidget.Invalidate();
         }
 
         /// <summary>
@@ -223,8 +227,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
             LocationConditions = allLocationConditions;
             AllCompletedConditions = allCompletedConditions;
 
-            if (MainWindow.Window?.GeneralSettingsControl?.QuestItems?.Count != ActiveQuests.Count)
-                MainWindow.Window?.GeneralSettingsControl?.RefreshQuestHelper();
+
 
             _rateLimit.Restart();
         }
