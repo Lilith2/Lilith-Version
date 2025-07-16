@@ -52,6 +52,10 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="UI\SKWidgetControl\QuestInfoWidget.cs" />
+	</ItemGroup>
 	
   <ItemGroup>
 	<PackageReference Include="DarkModeForms.imerzan" Version="1.0.1" />

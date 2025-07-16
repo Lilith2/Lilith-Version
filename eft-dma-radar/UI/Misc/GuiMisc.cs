@@ -175,16 +175,19 @@ namespace eft_dma_radar.UI.Misc
     {
         public string Id { get; }
         public string Name { get; }
+        public bool KappaRequired { get; }
         public QuestListItem(string id)
         {
             Id = id;
             if (EftDataManager.TaskData.TryGetValue(id, out var task))
             {
                 Name = task.Name ?? id;
+                KappaRequired = task.KappaRequired;
             }
             else
             {
                 Name = id;
+                KappaRequired = false;
             }
         }
         public override string ToString() => Name;
@@ -283,6 +286,22 @@ namespace eft_dma_radar.UI.Misc
             path.MoveTo(x, y);
             path.LineTo(x - size, y - size);
             path.LineTo(x + size, y - size);
+            path.Close();
+
+            return path;
+        }
+
+        /// <summary>
+        /// Gets a drawable 'Up Arrow' or 'Down Arrow'. IDisposable. Applies UI Scaling internally.
+        /// </summary>
+        public static SKPath GetArrow(this SKPoint point, float size = 6, bool is_up = true, float offsetX = 0, float offsetY = 0)
+        {
+            float x = point.X + offsetX, y = point.Y + offsetY;
+            size *= MainForm.UIScale;
+            var path = new SKPath();
+            path.MoveTo(x, y);
+            path.LineTo(x - size, is_up ? y + size : y - size);
+            path.LineTo(x + size, is_up ? y + size : y - size);
             path.Close();
 
             return path;

@@ -57,6 +57,7 @@ namespace eft_dma_radar.UI.Radar
         private EspWidget _aimview;
         private PlayerInfoWidget _playerInfo;
         private LootInfoWidget _lootInfo;
+        //private QuestInfoWidget _questInfoWidget;
 
         /// <summary>
         /// Main UI/Application Config.
@@ -410,6 +411,8 @@ namespace eft_dma_radar.UI.Radar
                         _lootInfo?.Draw(canvas, localPlayer, mousePos, mouseClicked);
                     if (Config.ESPWidgetEnabled)
                         _aimview?.Draw(canvas);
+                    //if (checkBox_QuestHelper_Enabled.Checked)
+                    //    _questInfoWidget?.Draw(canvas);
                 }
                 else // LocalPlayer is *not* in a Raid -> Display Reason
                 {
@@ -519,7 +522,13 @@ namespace eft_dma_radar.UI.Radar
             {
                 if (checkedListBox_QuestHelper.Items[e.Index] is QuestListItem item)
                 {
-                    Config.QuestHelper.BlacklistedQuests.Remove(item.Id.ToLower());
+                    if (!item.KappaRequired && checkBox_KappaOnly.Checked)
+                    {
+                        e.NewValue = CheckState.Unchecked;
+                        Config.QuestHelper.BlacklistedQuests.Add(item.Id.ToLower());
+                    }
+                    else
+                        Config.QuestHelper.BlacklistedQuests.Remove(item.Id.ToLower());
                 }
             }
             else if (e.NewValue == CheckState.Unchecked)
@@ -847,6 +856,7 @@ namespace eft_dma_radar.UI.Radar
             _aimview?.SetScaleFactor(newScale);
             _playerInfo?.SetScaleFactor(newScale);
             _lootInfo?.SetScaleFactor(newScale);
+            //_questInfoWidget?.SetScaleFactor(newScale);
 
             #region UpdatePaints
 
@@ -1332,6 +1342,14 @@ namespace eft_dma_radar.UI.Radar
             RefreshQuestHelper();
         }
 
+        private void checkBox_KappaOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_QuestHelper_Enabled.Checked)
+            {
+                RefreshQuestHelper();
+            }
+        }
+
         private void radioButton_AimbotDefaultMode_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButton_AimTarget_FOV.Checked)
@@ -1646,6 +1664,8 @@ namespace eft_dma_radar.UI.Radar
                 Config.Widgets.PlayerInfoMinimized, UIScale);
             _lootInfo = new LootInfoWidget(skglControl_Radar, Config.Widgets.LootInfoLocation,
                 Config.Widgets.LootInfoMinimized, UIScale);
+            //_questInfoWidget = new QuestInfoWidget(skglControl_Radar, Config.Widgets.QuestWidgetLocation,
+            //    Config.Widgets.QuestWidgetMinimized, UIScale);
         }
 
         private void SetMemWriteFeatures()
@@ -1942,6 +1962,8 @@ namespace eft_dma_radar.UI.Radar
                 Config.Widgets.PlayerInfoMinimized = _playerInfo.Minimized;
                 Config.Widgets.LootInfoLocation = _lootInfo.Rectangle;
                 Config.Widgets.LootInfoMinimized = _lootInfo.Minimized;
+                //Config.Widgets.QuestWidgetLocation = _questInfoWidget.Rectangle;
+                //Config.Widgets.QuestWidgetMinimized = _questInfoWidget.Minimized;
                 Config.AimLineLength = (int)numericUpDown_AimLineLength.Value;
                 Config.ShowInfoTab = checkBox_ShowInfoTab.Checked;
                 Config.ShowLootTab = checkBox_ShowLootTab.Checked;

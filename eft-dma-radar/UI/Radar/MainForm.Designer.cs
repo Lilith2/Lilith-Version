@@ -262,6 +262,7 @@ namespace eft_dma_radar.UI.Radar
             button_VischeckInvisColorPickPMC = new Button();
             colorPicker1 = new ColorDialog();
             toolTip1 = new ToolTip(components);
+            checkBox_KappaOnly = new CheckBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             flowLayoutPanel_Loot.SuspendLayout();
@@ -1125,6 +1126,7 @@ namespace eft_dma_radar.UI.Radar
             flowLayoutPanel1.BorderStyle = BorderStyle.FixedSingle;
             flowLayoutPanel1.Controls.Add(label34);
             flowLayoutPanel1.Controls.Add(checkBox_QuestHelper_Enabled);
+            flowLayoutPanel1.Controls.Add(checkBox_KappaOnly);
             flowLayoutPanel1.Controls.Add(checkedListBox_QuestHelper);
             flowLayoutPanel1.Dock = DockStyle.Top;
             flowLayoutPanel_Settings.SetFlowBreak(flowLayoutPanel1, true);
@@ -1162,7 +1164,7 @@ namespace eft_dma_radar.UI.Radar
             // 
             checkedListBox_QuestHelper.Anchor = AnchorStyles.Right;
             checkedListBox_QuestHelper.FormattingEnabled = true;
-            checkedListBox_QuestHelper.Location = new Point(77, 28);
+            checkedListBox_QuestHelper.Location = new Point(142, 28);
             checkedListBox_QuestHelper.Name = "checkedListBox_QuestHelper";
             checkedListBox_QuestHelper.Size = new Size(343, 148);
             checkedListBox_QuestHelper.TabIndex = 48;
@@ -2945,6 +2947,17 @@ namespace eft_dma_radar.UI.Radar
             toolTip1.InitialDelay = 500;
             toolTip1.ReshowDelay = 100;
             // 
+            // checkBox_KappaOnly
+            // 
+            checkBox_KappaOnly.Anchor = AnchorStyles.Right;
+            checkBox_KappaOnly.AutoSize = true;
+            checkBox_KappaOnly.Location = new Point(77, 92);
+            checkBox_KappaOnly.Name = "checkBox_KappaOnly";
+            checkBox_KappaOnly.Size = new Size(59, 19);
+            checkBox_KappaOnly.TabIndex = 49;
+            checkBox_KappaOnly.Text = "Kappa";
+            checkBox_KappaOnly.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3252,6 +3265,7 @@ namespace eft_dma_radar.UI.Radar
         private Label label_MaxDist;
         private Label label_TopRowSpacer;
         private NumericUpDown numericUpDown_AimLineLength;
+        private CheckBox checkBox_KappaOnly;
     }
 }
 

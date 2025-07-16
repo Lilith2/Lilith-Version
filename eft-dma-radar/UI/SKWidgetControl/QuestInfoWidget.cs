@@ -1,14 +1,6 @@
 ﻿using eft_dma_radar.Tarkov.GameWorld;
 using eft_dma_radar.UI.Misc;
-using eft_dma_shared.Common.Misc;
 using eft_dma_shared.Common.Misc.Data;
-using SkiaSharp;
-using Svg;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace eft_dma_radar.UI.SKWidgetControl
 {
@@ -17,10 +9,10 @@ namespace eft_dma_radar.UI.SKWidgetControl
         private static Config Config => Program.Config;
         private readonly float _padding;
         private readonly Dictionary<string, bool> _collapsedQuests = new();
-        private bool _showKeys = false;
-        private bool _showRequiredItems = false;
-        private bool _hideCompleted = false;
-        private bool _showOtherQuests = false;
+        private bool _showKeys = true;
+        private bool _showRequiredItems = true;
+        private bool _hideCompleted = true;
+        private bool _showOtherQuests = true;
 
         /// <summary>
         /// Constructs a Quest Info Widget.
@@ -106,12 +98,10 @@ namespace eft_dma_radar.UI.SKWidgetControl
                 return;
             }
 
-            var questManager = Memory.QuestManager;
-
-            if (questManager == null)
+            if (Memory.QuestManager == null)
                 return;
 
-            var allCurrentMapQuests = questManager.GetQuestsForCurrentMap().ToList();
+            var allCurrentMapQuests = QuestManager. ToList();
             var currentMapQuests = Config.QuestHelper.KappaFilter ? allCurrentMapQuests.Where(q => q.KappaRequired).ToList() : allCurrentMapQuests;
 
             var allOtherQuests = _showOtherQuests ? questManager.GetOtherQuests().ToList() : new List<Quest>();

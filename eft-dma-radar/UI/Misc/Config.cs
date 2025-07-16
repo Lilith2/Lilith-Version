@@ -2,7 +2,6 @@
 using eft_dma_radar.Tarkov.Features.MemoryWrites;
 using eft_dma_radar.UI.ColorPicker.ESP;
 using eft_dma_radar.UI.ColorPicker.Radar;
-using eft_dma_radar.UI.ESP;
 using eft_dma_radar.UI.LootFilters;
 using eft_dma_shared.Common.DMA;
 using eft_dma_shared.Common.ESP;
@@ -92,6 +91,8 @@ namespace eft_dma_radar.UI.Misc
         [JsonInclude]
         public QuestHelperConfig QuestHelper { get; private set; } = new();
 
+
+
         /// <summary>
         /// Shows Info Tab/Pane in the top right corner of radar.
         /// </summary>
@@ -115,6 +116,11 @@ namespace eft_dma_radar.UI.Misc
         /// </summary>
         [JsonPropertyName("showMines")]
         public bool ShowMines { get; set; } = true;
+
+        /// <summary>
+        /// Show BorderZone for KillTask
+        /// </summary>
+        public bool ShowZone { get; set; }
 
         /// <summary>
         /// Enables ESP Widget window in Main Window.
@@ -423,7 +429,7 @@ namespace eft_dma_radar.UI.Misc
         /// Enables processing optional related quest tasks
         /// </summary>
         [JsonPropertyName("optionalTaskFilter")]
-        public bool OptionalTaskFilter { get; set; } = false;
+        public bool OptionalTaskFilter { get; set; } = true;
 
         /// <summary>
         /// Enables Quest Kill Zones
@@ -1069,9 +1075,26 @@ namespace eft_dma_radar.UI.Misc
             get => new(_lootInfoLoc.Left, _lootInfoLoc.Top, _lootInfoLoc.Right, _lootInfoLoc.Bottom);
             set => _lootInfoLoc = new RectFSer(value.Left, value.Top, value.Right, value.Bottom);
         }
-        
+
         #endregion
-        
+
+        #region QuestWidget
+
+        [JsonPropertyName("QuestWidgetMinimized")]
+        public bool QuestWidgetMinimized { get; set; } = false;
+
+        [JsonInclude]
+        [JsonPropertyName("QuestWidgetLocation")]
+        public RectFSer _QuestWidgetLoc { private get; set; }
+        [JsonIgnore]
+        public SKRect QuestWidgetLocation
+        {
+            get => new(_QuestWidgetLoc.Left, _QuestWidgetLoc.Top, _QuestWidgetLoc.Right, _QuestWidgetLoc.Bottom);
+            set => _QuestWidgetLoc = new RectFSer(value.Left, value.Top, value.Right, value.Bottom);
+        }
+
+        #endregion
+
     }
 
     /// <summary>
