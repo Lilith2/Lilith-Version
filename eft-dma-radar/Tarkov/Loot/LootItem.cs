@@ -210,6 +210,50 @@ namespace eft_dma_radar.Tarkov.Loot
             }
         }
 
+        public bool IsWeaponMod => _item.IsWeaponMod;
+
+        public bool IsArmorPlate => _item.IsArmorPlate;
+
+        public bool IsPlateCarrier => _item.IsPlateCarrier;
+
+        public bool IsArmoredRig => _item.IsArmoredRig;
+
+        public bool IsBullet => _item.IsBullet;
+
+        public bool IsThermalScope => _item.IsThermalScope;
+
+        public bool IsUBGL => _item.IsUBGL;
+
+        public bool IsAltyn => _item.IsAltyn;
+
+        public bool IsVulkan => _item.IsVulkan;
+
+        public bool IsWelding => _item.IsWelding;
+
+        public bool IsRysT => _item.IsRysT;
+
+        public bool IsMaska => _item.IsMaska;
+
+        public bool IsT7 => _item.IsT7;
+
+        public bool IsNVG => _item.IsNVG;
+
+        public bool IsAmmo => _item.IsAmmo;
+
+        public bool IsArmoredEquipment => _item.IsArmoredEquipment;
+
+        public bool IsKey => _item.IsKey;
+
+        public bool IsKeycard => _item.IsKeycard;
+        public bool CouldHavePlates => _item.CouldHavePlates;
+
+        public bool IsSpecialItem => _item.IsSpecialItem;
+
+        public bool IsRocket => _item.IsRocket;
+        public bool IsRocketLauncher => _item.IsRocketLauncher;
+
+        public bool IsPoster => _item.IsPoster;
+
         /// <summary>
         /// True if this item contains the specified Search Predicate.
         /// </summary>

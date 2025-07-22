@@ -1,5 +1,4 @@
-﻿global using SKSvg = Svg.Skia.SKSvg;
-global using SkiaSharp;
+﻿global using SkiaSharp;
 global using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 global using SkiaSharp.Views.Desktop;
 global using System.ComponentModel;
@@ -14,16 +13,10 @@ global using System.Collections.Concurrent;
 global using System.Net;
 global using System.Runtime.CompilerServices;
 global using System.Runtime.InteropServices;
-global using System.Net.Security;
-global using System.Security.Cryptography;
-global using System.Security.Cryptography.X509Certificates;
 global using System.Collections;
 global using System.Net.Http.Headers;
 global using System.Buffers;
-global using System.Buffers.Binary;
 global using SDK;
-global using eft_dma_shared;
-global using eft_dma_shared.Misc;
 global using eft_dma_shared.Common;
 using System.Runtime.Versioning;
 using eft_dma_radar;
@@ -47,6 +40,9 @@ namespace eft_dma_radar
 {
     internal static class Program
     {
+        [DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
+
         internal const string Name = "EFT DMA Radar";
 
 
@@ -64,12 +60,13 @@ namespace eft_dma_radar
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [Obfuscation(Feature = "Virtualization", Exclude = false)]
+        //[Obfuscation(Feature = "Virtualization", Exclude = false)]
         [STAThread]
         static void Main(string[] args)
         {
             try
             {
+                EnsureConsole();
                 ConfigureProgram();
                 Application.Run(new MainForm());
             }
@@ -81,6 +78,34 @@ namespace eft_dma_radar
         }
 
         #region Private Members
+
+        /// <summary>
+        /// Ensures a console window is attached for logging.
+        /// </summary>
+        private static void EnsureConsole()
+        {
+            // Only allocate a console if one does not already exist
+            if (!ConsoleAttached())
+            {
+                AllocConsole();
+            }
+        }
+
+        /// <summary>
+        /// Checks if a console window is already attached.
+        /// </summary>
+        private static bool ConsoleAttached()
+        {
+            try
+            {
+                int windowHeight = Console.WindowHeight;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         static Program()
         {
@@ -120,7 +145,7 @@ namespace eft_dma_radar
         /// <summary>
         /// Configure Program Startup.
         /// </summary>
-        [Obfuscation(Feature = "Virtualization", Exclude = false)]
+        //[Obfuscation(Feature = "Virtualization", Exclude = false)]
         private static void ConfigureProgram()
         {
             ApplicationConfiguration.Initialize();

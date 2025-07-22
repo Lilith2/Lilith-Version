@@ -1,10 +1,5 @@
 using eft_dma_radar.Tarkov.EFTPlayer;
 using eft_dma_radar.Tarkov.Loot;
-using eft_dma_radar.UI.Radar;
-using eft_dma_shared.Common.Misc;
-using eft_dma_shared.Common.Misc.Data;
-using SkiaSharp;
-using System.Text;
 
 namespace eft_dma_radar.UI.SKWidgetControl
 {

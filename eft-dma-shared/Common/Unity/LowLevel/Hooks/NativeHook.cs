@@ -90,7 +90,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
         /// Invoke Hook Fn Bytes for our code cave. This is the shellcode that will be executed by the ~IAT hook.
         /// </summary>
         /// <returns>Byte array</returns>
-        [Obfuscation(Feature = "Virtualization", Exclude = false)]
+        //[Obfuscation(Feature = "Virtualization", Exclude = false)]
         private static byte[] GetInvokeHookShellcode()
         {
             return new byte[]
@@ -218,7 +218,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
         /// </summary>
         /// <param name="codeCave">Code Cave Address for this process.</param>
         /// <returns>True if initialized OK from Cache, otherwise False.</returns>
-        [Obfuscation(Feature = "Virtualization", Exclude = false)]
+        //[Obfuscation(Feature = "Virtualization", Exclude = false)]
         private static bool TryInitFromCache()
         {
             if (Memory.PID == Cache.PID && Cache.CodeCave != 0x0)
@@ -237,7 +237,7 @@ namespace eft_dma_shared.Common.Unity.LowLevel.Hooks
         /// <summary>
         /// Set the Cache Data.
         /// </summary>
-        [Obfuscation(Feature = "Virtualization", Exclude = false)]
+        //[Obfuscation(Feature = "Virtualization", Exclude = false)]
         private static void SetCache()
         {
             Cache.PID = Memory.PID;

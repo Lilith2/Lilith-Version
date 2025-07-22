@@ -168,6 +168,18 @@ namespace eft_dma_radar.UI.SKWidgetControl
         }
         #endregion
 
+        #region Virtual Methods
+        /// <summary>
+        /// Override to handle client area clicks in derived widgets
+        /// </summary>
+        /// <param name="point">Click point in widget coordinates</param>
+        /// <returns>True if the click was handled</returns>
+        public virtual bool HandleClientAreaClick(SKPoint point)
+        {
+            return false;
+        }
+        #endregion
+
         #region Public Methods
         public virtual void Draw(SKCanvas canvas)
         {

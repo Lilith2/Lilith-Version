@@ -313,7 +313,8 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
                     {
                         _lastRandomBone = Config.RandomBone.GetRandomBone();
                         _lastShotIndex = shotIndex;
-                        $"New Random Bone {_lastRandomBone.GetDescription()} ({shotIndex})".printf();
+                        //$"New Random Bone {_lastRandomBone.GetDescription()} ({shotIndex})".printf();
+                        LoneLogging.WriteLine($"New Random Bone {_lastRandomBone.GetDescription()} ({shotIndex})");
                     }
                     bone = _lastRandomBone;
                 }
@@ -401,7 +402,7 @@ namespace eft_dma_radar.Tarkov.Features.MemoryWrites
             }
             catch (Exception ex)
             {
-                $"Silent Aim [FAIL] {ex}".printf();
+                LoneLogging.WriteLine($"Silent Aim [FAIL] {ex}");
                 ResetSilentAim();
             }
         }

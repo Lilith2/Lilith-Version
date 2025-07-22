@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
     <RootNamespace>LonesEFTRadar</RootNamespace>
     <Nullable>warnings</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
@@ -51,6 +51,10 @@
 		<Content Include="..\tinylz4.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="UI\SKWidgetControl\QuestInfoWidget.cs" />
 	</ItemGroup>
 	
   <ItemGroup>

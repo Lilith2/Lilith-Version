@@ -460,10 +460,6 @@ namespace eft_dma_radar.UI.ESP
             if (questItems is not null)
                 foreach (var item in questItems)
                     item.DrawESP(canvas, localPlayer);
-            var questLocations = Memory.QuestManager?.LocationConditions;
-            if (questLocations is not null)
-                foreach (var loc in questLocations)
-                    loc.DrawESP(canvas, localPlayer);
         }
 
         /// <summary>

@@ -82,6 +82,97 @@ namespace eft_dma_shared.Common.Misc.Data
         [JsonIgnore]
         public bool IsCurrency => Tags.Contains("Money");
 
+        [JsonIgnore]
+        public bool IsGear => Tags.Contains("Equipment") || IsPlateCarrier;
+        /// <summary>
+        /// Is a Weapon Mod.
+        /// </summary>
+        [JsonIgnore]
+        public bool IsWeaponMod => Tags.Contains("Weapon mod");
+        /// <summary>
+        /// Is Currency (Roubles,etc.)
+        /// </summary>
+
+        [JsonIgnore]
+        public bool IsUBGL => Tags.Contains("UBGL");
+
+        [JsonIgnore]
+        public bool IsT7 => Tags.Contains("Thermal Vision");
+
+        [JsonIgnore]
+        public bool IsNVG => Tags.Contains("Night Vision");
+
+        [JsonIgnore]
+        public bool IsWelding => Name.Contains("welding mask", StringComparison.OrdinalIgnoreCase);
+        [JsonIgnore]
+        public bool IsAltyn => Name.Contains("altyn", StringComparison.OrdinalIgnoreCase);
+        [JsonIgnore]
+        public bool IsRysT => Name.Contains("rys-t", StringComparison.OrdinalIgnoreCase);
+        [JsonIgnore]
+        public bool IsMaska => Name.Contains("Maska-1SCh", StringComparison.OrdinalIgnoreCase);
+        [JsonIgnore]
+        public bool IsVulkan => Name.Contains("vulkan", StringComparison.OrdinalIgnoreCase);
+        [JsonIgnore]
+        public bool IsJuggernaught => Name.Contains("altyn", StringComparison.OrdinalIgnoreCase) || Name.Contains("rys-t", StringComparison.OrdinalIgnoreCase) || Name.Contains("Maska-1SCh", StringComparison.OrdinalIgnoreCase);
+
+        [JsonIgnore]
+        public bool IsThermalScope => Tags.Contains("Special scope") && !IsNVG && !Name.ToLower().Contains("night vision scope") && !IsT7;
+
+        [JsonIgnore]
+        public bool IsBullet => Tags.Contains("Ammo");
+        [JsonIgnore]
+        public bool IsAmmo => Tags.Contains("Ammo container");
+        [JsonIgnore]
+        public bool IsContainer => Tags.Contains("Common container");
+        [JsonIgnore]
+        public bool IsThrowable => Tags.Contains("Throwable weapon");
+        [JsonIgnore]
+        public bool IsKey => Tags.Contains("Mechanical Key");
+        [JsonIgnore]
+        public bool IsKeycard => Tags.Contains("Keycard");
+        [JsonIgnore]
+        public bool IsHeadset => Tags.Contains("Headphones");
+        [JsonIgnore]
+        public bool IsHelmet => Tags.Contains("Helmet");
+        [JsonIgnore]
+        public bool IsRig => Tags.Contains("Chest rig");
+        [JsonIgnore]
+        public bool IsArmband => Tags.Contains("Arm Band");
+        [JsonIgnore]
+        public bool IsFaceCover => Tags.Contains("Face Cover");
+        [JsonIgnore]
+        public bool IsGlasses => Tags.Contains("Vis. observ. device");
+        [JsonIgnore]
+        public bool IsMelee => Tags.Contains("Knife");
+        [JsonIgnore]
+        public bool IsArmorPlate => Tags.Contains("Armor Plate");
+        [JsonIgnore]
+        public bool CouldHavePlates => (IsArmoredEquipment &&
+            !Name.ToLower().Contains("soft") && !Name.ToLower().Contains("module-3M") && !Name.ToLower().Contains("visor") && !Name.ToLower().Contains("shield") &&
+            !Name.ToLower().Contains("ops-core") || !Name.ToLower().Contains("mf-untar") && !ShortName.ToLower().Contains("af ") && !Name.ToLower().Contains("lshz-2dtm") &&
+            !Name.ToLower().Contains("covers") && !Name.ToLower().Contains("") && !Name.ToLower().Contains("helmet") &&
+            !IsHelmet &&
+            !IsFaceCover &&
+            !IsGlasses) || IsPlateCarrier;
+        [JsonIgnore]
+
+        public bool IsBodyArmor => Name.ToLower().Contains("body armor");
+        [JsonIgnore]
+        public bool IsArmoredEquipment => Tags.Contains("Armored equipment");
+        [JsonIgnore]
+        public bool IsPlateCarrier => Name.ToLower().Contains("plate carrier");
+        [JsonIgnore]
+        public bool IsArmoredRig => (IsRig && IsPlateCarrier);
+        [JsonIgnore]
+        public bool IsSpecialItem => Tags.Contains("Special item");
+        [JsonIgnore]
+        public bool IsRocket => Tags.Contains("Rocket") && Tags.Contains("Ammo");
+        [JsonIgnore]
+        public bool IsRocketLauncher => Tags.Contains("Rocket Launcher") && Tags.Contains("Weapon");
+
+        [JsonIgnore]
+        public bool IsPoster => Tags.Contains("Flyer");
+
         /// <summary>
         /// This field is set if this item has a special filter.
         /// </summary>
