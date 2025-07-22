@@ -103,6 +103,7 @@ namespace eft_dma_radar.UI.Radar
             flowLayoutPanel1 = new FlowLayoutPanel();
             label34 = new Label();
             checkBox_QuestHelper_Enabled = new CheckBox();
+            checkBox_KappaOnly = new CheckBox();
             checkedListBox_QuestHelper = new CheckedListBox();
             flowLayoutPanel_MemWriteCheckbox = new FlowLayoutPanel();
             checkBox_EnableMemWrite = new CheckBox();
@@ -138,6 +139,9 @@ namespace eft_dma_radar.UI.Radar
             trackBar_NoRecoil = new TrackBar();
             label_Sway = new Label();
             trackBar_NoSway = new TrackBar();
+            flowLayoutPanel3 = new FlowLayoutPanel();
+            label9_AimbotMaxDistance = new Label();
+            numericUpDown_AimbotDistance = new NumericUpDown();
             flowLayoutPanel_MonitorSettings = new FlowLayoutPanel();
             label11 = new Label();
             label_Width = new Label();
@@ -262,7 +266,6 @@ namespace eft_dma_radar.UI.Radar
             button_VischeckInvisColorPickPMC = new Button();
             colorPicker1 = new ColorDialog();
             toolTip1 = new ToolTip(components);
-            checkBox_KappaOnly = new CheckBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             flowLayoutPanel_Loot.SuspendLayout();
@@ -284,6 +287,8 @@ namespace eft_dma_radar.UI.Radar
             flowLayoutPanel_NoRecoil.SuspendLayout();
             ((ISupportInitialize)trackBar_NoRecoil).BeginInit();
             ((ISupportInitialize)trackBar_NoSway).BeginInit();
+            flowLayoutPanel3.SuspendLayout();
+            ((ISupportInitialize)numericUpDown_AimbotDistance).BeginInit();
             flowLayoutPanel_MonitorSettings.SuspendLayout();
             flowLayoutPanel_ESPSettings.SuspendLayout();
             flowLayoutPanel_ESP_PlayerRender.SuspendLayout();
@@ -446,12 +451,10 @@ namespace eft_dma_radar.UI.Radar
             // radioButton_Loot_FleaPrice
             // 
             radioButton_Loot_FleaPrice.AutoSize = true;
-            radioButton_Loot_FleaPrice.Checked = true;
             radioButton_Loot_FleaPrice.Location = new Point(3, 68);
             radioButton_Loot_FleaPrice.Name = "radioButton_Loot_FleaPrice";
             radioButton_Loot_FleaPrice.Size = new Size(80, 19);
             radioButton_Loot_FleaPrice.TabIndex = 27;
-            radioButton_Loot_FleaPrice.TabStop = true;
             radioButton_Loot_FleaPrice.Text = "Flea Prices";
             radioButton_Loot_FleaPrice.UseVisualStyleBackColor = true;
             radioButton_Loot_FleaPrice.CheckedChanged += radioButton_Loot_FleaPrice_CheckedChanged;
@@ -459,11 +462,13 @@ namespace eft_dma_radar.UI.Radar
             // radioButton_Loot_VendorPrice
             // 
             radioButton_Loot_VendorPrice.AutoSize = true;
+            radioButton_Loot_VendorPrice.Checked = true;
             flowLayoutPanel_Loot.SetFlowBreak(radioButton_Loot_VendorPrice, true);
             radioButton_Loot_VendorPrice.Location = new Point(89, 68);
             radioButton_Loot_VendorPrice.Name = "radioButton_Loot_VendorPrice";
             radioButton_Loot_VendorPrice.Size = new Size(92, 19);
             radioButton_Loot_VendorPrice.TabIndex = 28;
+            radioButton_Loot_VendorPrice.TabStop = true;
             radioButton_Loot_VendorPrice.Text = "Trader Prices";
             radioButton_Loot_VendorPrice.UseVisualStyleBackColor = true;
             radioButton_Loot_VendorPrice.CheckedChanged += radioButton_Loot_VendorPrice_CheckedChanged;
@@ -935,6 +940,8 @@ namespace eft_dma_radar.UI.Radar
             // checkBox_GrpConnect
             // 
             checkBox_GrpConnect.AutoSize = true;
+            checkBox_GrpConnect.Checked = true;
+            checkBox_GrpConnect.CheckState = CheckState.Checked;
             checkBox_GrpConnect.Location = new Point(504, 122);
             checkBox_GrpConnect.Name = "checkBox_GrpConnect";
             checkBox_GrpConnect.Size = new Size(112, 19);
@@ -1160,6 +1167,17 @@ namespace eft_dma_radar.UI.Radar
             checkBox_QuestHelper_Enabled.UseVisualStyleBackColor = true;
             checkBox_QuestHelper_Enabled.CheckedChanged += checkBox_QuestHelper_CheckedChanged;
             // 
+            // checkBox_KappaOnly
+            // 
+            checkBox_KappaOnly.Anchor = AnchorStyles.Right;
+            checkBox_KappaOnly.AutoSize = true;
+            checkBox_KappaOnly.Location = new Point(77, 92);
+            checkBox_KappaOnly.Name = "checkBox_KappaOnly";
+            checkBox_KappaOnly.Size = new Size(59, 19);
+            checkBox_KappaOnly.TabIndex = 49;
+            checkBox_KappaOnly.Text = "Kappa";
+            checkBox_KappaOnly.UseVisualStyleBackColor = true;
+            // 
             // checkedListBox_QuestHelper
             // 
             checkedListBox_QuestHelper.Anchor = AnchorStyles.Right;
@@ -1208,6 +1226,7 @@ namespace eft_dma_radar.UI.Radar
             flowLayoutPanel_MemWrites.Controls.Add(label22);
             flowLayoutPanel_MemWrites.Controls.Add(flowLayoutPanel_Aimbot);
             flowLayoutPanel_MemWrites.Controls.Add(flowLayoutPanel_NoRecoil);
+            flowLayoutPanel_MemWrites.Controls.Add(flowLayoutPanel3);
             flowLayoutPanel_MemWrites.Dock = DockStyle.Top;
             flowLayoutPanel_Settings.SetFlowBreak(flowLayoutPanel_MemWrites, true);
             flowLayoutPanel_MemWrites.Location = new Point(3, 564);
@@ -1236,6 +1255,7 @@ namespace eft_dma_radar.UI.Radar
             checkBox_AdvancedMemWrites.TabIndex = 74;
             checkBox_AdvancedMemWrites.Text = "Enable Advanced MemWrites (Very Risky)";
             checkBox_AdvancedMemWrites.UseVisualStyleBackColor = true;
+            checkBox_AdvancedMemWrites.Visible = false;
             // 
             // checkBox_hideRaidcode
             // 
@@ -1246,6 +1266,7 @@ namespace eft_dma_radar.UI.Radar
             checkBox_hideRaidcode.TabIndex = 78;
             checkBox_hideRaidcode.Text = "Hide RaidCode";
             checkBox_hideRaidcode.UseVisualStyleBackColor = true;
+            checkBox_hideRaidcode.Visible = false;
             checkBox_hideRaidcode.CheckedChanged += checkBox_hideRaidcode_CheckedChanged;
             // 
             // checkBox_streamerMode
@@ -1257,6 +1278,7 @@ namespace eft_dma_radar.UI.Radar
             checkBox_streamerMode.TabIndex = 78;
             checkBox_streamerMode.Text = "StreamerMode";
             checkBox_streamerMode.UseVisualStyleBackColor = true;
+            checkBox_streamerMode.Visible = false;
             checkBox_streamerMode.CheckedChanged += checkBox_streamerMode_CheckedChanged;
             // 
             // checkBox_AimBotEnabled
@@ -1584,6 +1606,42 @@ namespace eft_dma_radar.UI.Radar
             trackBar_NoSway.Size = new Size(80, 45);
             trackBar_NoSway.TabIndex = 49;
             trackBar_NoSway.TickStyle = TickStyle.None;
+            // 
+            // flowLayoutPanel3
+            // 
+            flowLayoutPanel3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel3.BorderStyle = BorderStyle.FixedSingle;
+            flowLayoutPanel3.Controls.Add(label9_AimbotMaxDistance);
+            flowLayoutPanel3.Controls.Add(numericUpDown_AimbotDistance);
+            flowLayoutPanel3.Location = new Point(834, 53);
+            flowLayoutPanel3.Name = "flowLayoutPanel3";
+            flowLayoutPanel3.Size = new Size(200, 40);
+            flowLayoutPanel3.TabIndex = 79;
+            // 
+            // label9_AimbotMaxDistance
+            // 
+            label9_AimbotMaxDistance.Anchor = AnchorStyles.Left;
+            label9_AimbotMaxDistance.AutoSize = true;
+            label9_AimbotMaxDistance.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label9_AimbotMaxDistance.Location = new Point(3, 0);
+            label9_AimbotMaxDistance.Name = "label9_AimbotMaxDistance";
+            label9_AimbotMaxDistance.Size = new Size(53, 15);
+            label9_AimbotMaxDistance.TabIndex = 1;
+            label9_AimbotMaxDistance.Text = "Aim Dist";
+            label9_AimbotMaxDistance.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // numericUpDown_AimbotDistance
+            // 
+            numericUpDown_AimbotDistance.Dock = DockStyle.Right;
+            numericUpDown_AimbotDistance.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown_AimbotDistance.Location = new Point(62, 3);
+            numericUpDown_AimbotDistance.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numericUpDown_AimbotDistance.Minimum = new decimal(new int[] { 20, 0, 0, 0 });
+            numericUpDown_AimbotDistance.Name = "numericUpDown_AimbotDistance";
+            numericUpDown_AimbotDistance.Size = new Size(102, 23);
+            numericUpDown_AimbotDistance.TabIndex = 0;
+            numericUpDown_AimbotDistance.Value = new decimal(new int[] { 350, 0, 0, 0 });
             // 
             // flowLayoutPanel_MonitorSettings
             // 
@@ -2947,17 +3005,6 @@ namespace eft_dma_radar.UI.Radar
             toolTip1.InitialDelay = 500;
             toolTip1.ReshowDelay = 100;
             // 
-            // checkBox_KappaOnly
-            // 
-            checkBox_KappaOnly.Anchor = AnchorStyles.Right;
-            checkBox_KappaOnly.AutoSize = true;
-            checkBox_KappaOnly.Location = new Point(77, 92);
-            checkBox_KappaOnly.Name = "checkBox_KappaOnly";
-            checkBox_KappaOnly.Size = new Size(59, 19);
-            checkBox_KappaOnly.TabIndex = 49;
-            checkBox_KappaOnly.Text = "Kappa";
-            checkBox_KappaOnly.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3001,6 +3048,9 @@ namespace eft_dma_radar.UI.Radar
             flowLayoutPanel_NoRecoil.PerformLayout();
             ((ISupportInitialize)trackBar_NoRecoil).EndInit();
             ((ISupportInitialize)trackBar_NoSway).EndInit();
+            flowLayoutPanel3.ResumeLayout(false);
+            flowLayoutPanel3.PerformLayout();
+            ((ISupportInitialize)numericUpDown_AimbotDistance).EndInit();
             flowLayoutPanel_MonitorSettings.ResumeLayout(false);
             flowLayoutPanel_MonitorSettings.PerformLayout();
             flowLayoutPanel_ESPSettings.ResumeLayout(false);
@@ -3266,6 +3316,9 @@ namespace eft_dma_radar.UI.Radar
         private Label label_TopRowSpacer;
         private NumericUpDown numericUpDown_AimLineLength;
         private CheckBox checkBox_KappaOnly;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private NumericUpDown numericUpDown_AimbotDistance;
+        private Label label9_AimbotMaxDistance;
     }
 }
 

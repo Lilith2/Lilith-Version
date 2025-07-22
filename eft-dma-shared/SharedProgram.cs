@@ -42,7 +42,7 @@ namespace eft_dma_shared
                 throw new ApplicationException("The Application Is Already Running!");
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             SetHighPerformanceMode();
-            SetupHttpClient();
+            //SetupHttpClient();
 #if !DEBUG
             VerifyDependencies();
 #endif

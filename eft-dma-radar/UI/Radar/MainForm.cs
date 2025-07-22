@@ -1461,6 +1461,7 @@ namespace eft_dma_radar.UI.Radar
         {
             checkedListBox_QuestHelper.ItemCheck += CheckedListBox_QuestHelper_ItemCheck;
             numericUpDown_AimLineLength.ValueChanged += numericUpDown_AimLineLength_ValueChanged;
+            numericUpDown_AimbotDistance.ValueChanged += numericUpDown_AimbotDistance_ValueChanged;
 
             trackBar_UIScale.ValueChanged += TrackBar_UIScale_ValueChanged;
             numericUpDown_MaxDist.ValueChanged += numericUpDown_MaxDist_ValueChanged;
@@ -1816,6 +1817,7 @@ namespace eft_dma_radar.UI.Radar
                 .OrderBy(x => x.Name)
                 .ToArray());
             numericUpDown_AimLineLength.Value = Config.AimLineLength;
+            numericUpDown_AimbotDistance.Value = (int)Config.MaxDistance;
             checkBox_Loot.Checked = Config.ShowLoot;
             checkBox_LootPPS.Checked = Config.LootPPS;
             if (Config.LootPriceMode is LootPriceMode.FleaMarket)
@@ -3251,6 +3253,11 @@ namespace eft_dma_radar.UI.Radar
         private void numericUpDown_AimLineLength_ValueChanged(object sender, EventArgs e)
         {
             Config.AimLineLength = (int)numericUpDown_AimLineLength.Value;
+        }
+
+        private void numericUpDown_AimbotDistance_ValueChanged(object sender, EventArgs e)
+        {
+            Config.MaxDistance = (float)numericUpDown_AimbotDistance.Value;
         }
 
         private void numericUpDown_MaxDist_ValueChanged(object sender, EventArgs e)

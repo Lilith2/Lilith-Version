@@ -11,8 +11,9 @@ namespace eft_dma_shared.Common.Misc
 
         static LoneLogging()
         {
-            string[] args = Environment.GetCommandLineArgs();
-            if (args?.Contains("-logging", StringComparer.OrdinalIgnoreCase) ?? false)
+            //string[] args = Environment.GetCommandLineArgs();
+            bool log = true;
+            if (log)
             {
                 string logFileName = $"log-{DateTime.UtcNow.ToFileTime().ToString()}.txt";
                 var fs = new FileStream(logFileName, FileMode.Create, FileAccess.Write);

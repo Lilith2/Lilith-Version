@@ -3,7 +3,7 @@ using eft_dma_radar.UI.Misc;
 
 namespace eft_dma_radar.UI.ColorPicker.Radar
 {
-    [Obfuscation(Exclude = true, Feature = "renaming")]
+    //[Obfuscation(Exclude = true, Feature = "renaming")]
     public enum RadarColorOption
     {
         LocalPlayer,
