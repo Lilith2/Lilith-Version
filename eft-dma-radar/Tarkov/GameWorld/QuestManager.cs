@@ -1,5 +1,4 @@
 ﻿using eft_dma_radar.Tarkov.EFTPlayer;
-using eft_dma_radar.UI.ESP;
 using eft_dma_radar.UI.Radar;
 using eft_dma_radar.UI.Misc;
 using System.Collections.Frozen;
@@ -279,7 +278,7 @@ namespace eft_dma_radar.Tarkov.GameWorld
     /// <summary>
     /// Wraps a Mouseoverable Quest Location marker onto the Map GUI.
     /// </summary>
-    public sealed class QuestLocation : IWorldEntity, IMapEntity, IMouseoverEntity, IESPEntity
+    public sealed class QuestLocation : IWorldEntity, IMapEntity, IMouseoverEntity
     {
         /// <summary>
         /// Main UI/Application Config.
@@ -318,23 +317,6 @@ namespace eft_dma_radar.Tarkov.GameWorld
             }
 
             return inside;
-        }
-
-        public void DrawESP(SKCanvas canvas, LocalPlayer localPlayer)
-        {
-            if ((this is QuestLocation) && !localPlayer.IsPmc)
-                return;
-            if (Vector3.Distance(localPlayer.Position, Position) > ESP.Config.QuestHelperDrawDistance)
-                return;
-            if (!CameraManagerBase.WorldToScreen(ref _position, out var scrPos))
-                return;
-            var boxHalf = 3.5f * ESP.Config.FontScale;
-            var boxPt = new SKRect(scrPos.X - boxHalf, scrPos.Y + boxHalf,
-                scrPos.X + boxHalf, scrPos.Y - boxHalf);
-            var textPt = new SKPoint(scrPos.X,
-                scrPos.Y + 16f * ESP.Config.FontScale);
-            canvas.DrawRect(boxPt, SKPaints.PaintQuestHelperESP);
-            textPt.DrawESPText(canvas, this, localPlayer, ESP.Config.ShowDistances, SKPaints.TextQuestHelperESP, Name);
         }
 
         public void Draw(SKCanvas canvas, LoneMapParams mapParams, ILocalPlayer localPlayer)

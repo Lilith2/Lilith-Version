@@ -52,6 +52,7 @@ namespace eft_dma_shared.Common.Misc.Data.TarkovMarket
                     tasks {
                         id
                         name
+                        kappaRequired
                         objectives {
                             id
                             type
